@@ -7,6 +7,17 @@ public class PlayerAnimation : MonoBehaviour {
 	Animator m_animator;
 	InputController m_input;
 
+	static class TransitionCoditions {
+		public static string moving 	 	= "moving";
+		public static string isJumpPressed  = "isJumpPressed";
+		public static string isFalling      = "isFalling";
+		public static string isGrounded  	= "isGrounded";
+		public static string isCrouching 	= "isCrouching";
+		public static string isSliding 	 	= "isSliding";
+		public static string isInFlight  	= "isInFlight";
+	};
+
+	bool prevJumpState;
 	// Use this for initialization
 	void Awake () {
 		m_animator = GetComponent <Animator> ();
@@ -15,20 +26,38 @@ public class PlayerAnimation : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+		m_animator.SetBool (TransitionCoditions.isGrounded, m_input.isOnGround);
 		
+		SetWalk ();
+
+		SetJump ();
+
+		// SetCrouch ();
+		// SetSlide ();
+		// SetAttack ();
+	}
+
+
+	void SetWalk () {
 		if (m_input.isOnGround) {
-			m_animator.SetFloat("moving", Mathf.Abs (m_input.m_horizontal));
+			m_animator.SetFloat (TransitionCoditions.moving, Mathf.Abs (m_input.m_horizontal));
+		}
+	}
+
+	void SetJump () {
+
+		// as soon as jump is pressed activate jump state
+		if (m_input.isOnGround == true && m_input.m_jumpPressed == true) {
+			m_animator.SetBool (TransitionCoditions.isJumpPressed, true);
+		// When in air and falling state
+		} else if (m_input.isOnGround == false && m_input.isFalling == true) {
+			m_animator.SetBool (TransitionCoditions.isFalling, true);
+		// when neither state, on ground
+		} else {
+			m_animator.SetBool (TransitionCoditions.isJumpPressed, false);
+			m_animator.SetBool (TransitionCoditions.isFalling, false);
 		}
 
-		if (m_input.m_jumpPressed == true) {
-			m_animator.SetBool ("isJumping", true);
-		} else if (m_input.isOnGround == false && m_input.isFalling == true) {
-			m_animator.SetBool ("isFalling", true);
-		} else {
-			m_animator.SetBool ("isJumping", false);
-			m_animator.SetBool ("isFalling", false);
-		}
-			
-		
+		m_animator.SetBool (TransitionCoditions.isInFlight, m_input.isInFlight);
 	}
 }

@@ -10,14 +10,11 @@ public class PlayerMovement : MonoBehaviour {
 	public int playerSpeed = 10;
 	public int jumpForce = 1250;
 	public float downRaySize = 0.8f;
-	public bool isOnGround = false;
-	public bool isFalling = false;
 
 	private Rigidbody2D m_playerRb;
 	private SpriteRenderer m_playerSpriteRenderer;
 
 	private float m_moveX;
-	private bool m_facingRight = true;
 	private bool m_jumpPressed = false;
 	private Vector2 prevPosition;
 	
@@ -32,8 +29,10 @@ public class PlayerMovement : MonoBehaviour {
 	void Update () {
 		m_moveX = m_input.m_horizontal;
 		m_jumpPressed = m_input.m_jumpPressed;
+		CheckIfAirborne ();
 		CheckIfFalling ();
 		ResetIfDead ();
+		prevPosition = transform.position;
 	}
 
 	// Update is called once per frame
@@ -44,7 +43,7 @@ public class PlayerMovement : MonoBehaviour {
 
 	void MovePlayer () {
 		
-		if (m_jumpPressed == true && isOnGround == true) {
+		if (m_jumpPressed == true && m_input.isOnGround == true) {
 			Jump();
 		}
 
@@ -54,28 +53,39 @@ public class PlayerMovement : MonoBehaviour {
 			m_playerSpriteRenderer.flipX = false;
 		}
 
-		m_playerRb.velocity = new Vector2(m_moveX * playerSpeed, m_playerRb.velocity.y);
+		if (!m_input.m_crouchPressed) {
+			m_playerRb.velocity = new Vector2(m_moveX * playerSpeed, m_playerRb.velocity.y);
+		} else {
+			m_playerRb.velocity = Vector2.zero;
+		}
 	}
 
 	void Jump () {
 		m_jumpPressed = false;
-		if (isOnGround) {
+		if (m_input.isOnGround) {
 			m_playerRb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
 		}
 		SetGroundStatus (false);
 	}
 
 	void CheckIfFalling () {
-		if (!isOnGround) {
+		if (!m_input.isOnGround) {
 			if (transform.position.y < prevPosition.y) {
-				isFalling = true;
 				m_input.isFalling = true;
 			} 
 		} else {
-			isFalling = false;
 			m_input.isFalling = false;
 		}
-		prevPosition = transform.position;
+	}
+
+	void CheckIfAirborne () {
+		if (!m_input.isOnGround) {
+			if (transform.position.y > prevPosition.y) {
+				m_input.isInFlight = true;
+			} 
+		} else {
+			m_input.isInFlight = false;
+		}
 	}
 
 	void ResetIfDead () {
@@ -88,9 +98,6 @@ public class PlayerMovement : MonoBehaviour {
 		RaycastHit2D downRayLeft = Physics2D.Raycast (this.transform.position + new Vector3(-0.4f, 0), Vector2.down, downRaySize);
 		RaycastHit2D downRayRight = Physics2D.Raycast (this.transform.position + new Vector3(0.4f, 0), Vector2.down, downRaySize);
 		RaycastHit2D downRay = Physics2D.Raycast (this.transform.position, Vector2.down, downRaySize);
-		Debug.DrawRay(this.transform.position + new Vector3(-0.5f, 0), Vector2.down);
-		Debug.DrawRay(this.transform.position + new Vector3(0.5f, 0), Vector2.down);
-		Debug.DrawRay(this.transform.position, Vector2.down);
 
 		if (downRayRight.collider != null || downRayLeft.collider != null || downRay.collider != null) {
 			bool leftCollider = downRayLeft.collider != null && downRayLeft.collider.tag == "Ground&Obstacles";
@@ -107,7 +114,6 @@ public class PlayerMovement : MonoBehaviour {
 	}
 
 	void SetGroundStatus (bool m_status) {
-		isOnGround = m_status;
 		m_input.isOnGround = m_status;
 	}
 }
