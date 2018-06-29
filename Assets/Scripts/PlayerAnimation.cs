@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerAnimation : MonoBehaviour {
-	
+
 	Animator m_animator;
 	InputController m_input;
 
@@ -23,23 +23,23 @@ public class PlayerAnimation : MonoBehaviour {
 		m_animator = GetComponent <Animator> ();
 		m_input = GetComponent <InputController>();
 	}
-	
+
 	// Update is called once per frame
 	void Update () {
 		m_animator.SetBool (TransitionCoditions.isGrounded, m_input.isOnGround);
-		
+
 		SetWalk ();
 
 		SetJump ();
 
-		// SetCrouch ();
+		SetCrouch ();
 		// SetSlide ();
 		// SetAttack ();
 	}
 
 
 	void SetWalk () {
-		if (m_input.isOnGround) {
+		if (m_input.isOnGround && !m_input.m_crouchPressed) {
 			m_animator.SetFloat (TransitionCoditions.moving, Mathf.Abs (m_input.m_horizontal));
 		}
 	}
@@ -47,10 +47,10 @@ public class PlayerAnimation : MonoBehaviour {
 	void SetJump () {
 
 		// as soon as jump is pressed activate jump state
-		if (m_input.isOnGround == true && m_input.m_jumpPressed == true) {
+		if (m_input.isOnGround && m_input.m_jumpPressed) {
 			m_animator.SetBool (TransitionCoditions.isJumpPressed, true);
 		// When in air and falling state
-		} else if (m_input.isOnGround == false && m_input.isFalling == true) {
+		} else if (!m_input.isOnGround && m_input.isFalling) {
 			m_animator.SetBool (TransitionCoditions.isFalling, true);
 		// when neither state, on ground
 		} else {
@@ -59,5 +59,9 @@ public class PlayerAnimation : MonoBehaviour {
 		}
 
 		m_animator.SetBool (TransitionCoditions.isInFlight, m_input.isInFlight);
+	}
+
+	void SetCrouch () {
+		m_animator.SetBool (TransitionCoditions.isCrouching, m_input.m_crouchPressed);
 	}
 }

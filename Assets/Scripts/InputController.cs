@@ -21,7 +21,7 @@ public class InputController : MonoBehaviour {
 		m_horizontal = Input.GetAxis ("Horizontal");
 		m_vertical = Input.GetAxis ("Vertical");
 		m_jumpPressed = Input.GetKeyDown (KeyCode.W);
-		m_crouchPressed  = Input.GetKeyDown (KeyCode.S);
+		m_crouchPressed  = Input.GetKey (KeyCode.S);
 		m_slidePressed = Input.GetKeyDown (KeyCode.LeftShift);
 	}
 }

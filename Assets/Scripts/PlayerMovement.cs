@@ -5,7 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class PlayerMovement : MonoBehaviour {
 
-	private InputController m_input; 
+	private InputController m_input;
 
 	public int playerSpeed = 10;
 	public int jumpForce = 1250;
@@ -17,7 +17,7 @@ public class PlayerMovement : MonoBehaviour {
 	private float m_moveX;
 	private bool m_jumpPressed = false;
 	private Vector2 prevPosition;
-	
+
 	// Use this for initialization
 	void Start () {
 		m_input = GetComponent <InputController> ();
@@ -25,10 +25,9 @@ public class PlayerMovement : MonoBehaviour {
 		m_playerSpriteRenderer = GetComponent <SpriteRenderer> ();
 		prevPosition = transform.position;
 	}
-	
+
 	void Update () {
 		m_moveX = m_input.m_horizontal;
-		m_jumpPressed = m_input.m_jumpPressed;
 		CheckIfAirborne ();
 		CheckIfFalling ();
 		ResetIfDead ();
@@ -42,26 +41,29 @@ public class PlayerMovement : MonoBehaviour {
 	}
 
 	void MovePlayer () {
-		
-		if (m_jumpPressed == true && m_input.isOnGround == true) {
-			Jump();
+
+		if (m_input.m_crouchPressed) {
+			if (m_input.isOnGround) {
+				m_playerRb.velocity = Vector2.zero;
+			}
+		} else {
+			if (m_input.m_jumpPressed == true && m_input.isOnGround == true) {
+				Jump();
+			}
+			m_playerRb.velocity = new Vector2(m_moveX * playerSpeed, m_playerRb.velocity.y);
 		}
 
+		// flip sprite based on direction facing
 		if (m_moveX < 0.0f) {
-			m_playerSpriteRenderer.flipX = true; 
+			m_playerSpriteRenderer.flipX = true;
 		} else if (m_moveX > 0.0f) {
 			m_playerSpriteRenderer.flipX = false;
 		}
 
-		if (!m_input.m_crouchPressed) {
-			m_playerRb.velocity = new Vector2(m_moveX * playerSpeed, m_playerRb.velocity.y);
-		} else {
-			m_playerRb.velocity = Vector2.zero;
-		}
 	}
 
 	void Jump () {
-		m_jumpPressed = false;
+		m_input.m_jumpPressed = false;
 		if (m_input.isOnGround) {
 			m_playerRb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
 		}
@@ -72,7 +74,7 @@ public class PlayerMovement : MonoBehaviour {
 		if (!m_input.isOnGround) {
 			if (transform.position.y < prevPosition.y) {
 				m_input.isFalling = true;
-			} 
+			}
 		} else {
 			m_input.isFalling = false;
 		}
@@ -82,7 +84,7 @@ public class PlayerMovement : MonoBehaviour {
 		if (!m_input.isOnGround) {
 			if (transform.position.y > prevPosition.y) {
 				m_input.isInFlight = true;
-			} 
+			}
 		} else {
 			m_input.isInFlight = false;
 		}
@@ -107,10 +109,10 @@ public class PlayerMovement : MonoBehaviour {
 			if (leftCollider || rightCollider || centerCollider) {
 				SetGroundStatus (true);
 			}
-		} 
+		}
 		else {
 			SetGroundStatus (false);
-		}  
+		}
 	}
 
 	void SetGroundStatus (bool m_status) {
