@@ -25,6 +25,7 @@ GameObject:
   - component: {fileID: 70350876496339752}
   - component: {fileID: 95206914462920576}
   - component: {fileID: 114514764930258036}
+  - component: {fileID: 114290708048578522}
   m_Layer: 0
   m_Name: Bandit Light
   m_TagString: Untagged
@@ -207,6 +208,17 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
+--- !u!114 &114290708048578522
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1192489733589390}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 77250af5c35ce34489d231dc3b85d3f7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &114448461662496986
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -221,7 +233,7 @@ MonoBehaviour:
   m_speed: 2.5
   m_type: 2
   m_damage: 20
-  health: 100
+  m_health: 0
 --- !u!114 &114514764930258036
 MonoBehaviour:
   m_ObjectHideFlags: 1

@@ -25,6 +25,7 @@ GameObject:
   - component: {fileID: 70083048801106534}
   - component: {fileID: 95486585781134682}
   - component: {fileID: 114347785084546798}
+  - component: {fileID: 114675407797707304}
   m_Layer: 0
   m_Name: Bandit Heavy
   m_TagString: Untagged
@@ -238,7 +239,18 @@ MonoBehaviour:
   m_speed: 4
   m_type: 2
   m_damage: 20
-  health: 100
+  m_health: 0
+--- !u!114 &114675407797707304
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1060333236504586}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 77250af5c35ce34489d231dc3b85d3f7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!212 &212676441812197276
 SpriteRenderer:
   m_ObjectHideFlags: 1

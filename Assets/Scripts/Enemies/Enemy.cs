@@ -18,13 +18,17 @@ public class Enemy : MonoBehaviour {
     [SerializeField]
     int m_health;
 
+    float m_attackAnimTime;
     float currentSpeed;
     Vector2 m_direction;
     float groundRaySize;
     bool m_GroundCollisionCheck = true;
+
     Rigidbody2D m_enemyRb;
     CapsuleCollider2D m_collider;
+    Animator m_animator;
     EnemyState m_enemyState;
+
 
     void Start() {
         currentSpeed = m_speed;
@@ -32,11 +36,24 @@ public class Enemy : MonoBehaviour {
     }
 
     void Awake () {
+        m_animator = GetComponent <Animator> ();
         m_enemyRb = GetComponent <Rigidbody2D> ();
         m_collider = GetComponent <CapsuleCollider2D> ();
         m_enemyState = GetComponent <EnemyState> ();
         m_enemyState.IS_WALKING = true;
         groundRaySize = m_collider.bounds.size.y * 0.75f;
+        SetAttackAnimationTime ();
+    }
+
+    void SetAttackAnimationTime () {
+        RuntimeAnimatorController ac = m_animator.runtimeAnimatorController;    //Get Animator controller
+        for(int i = 0; i<ac.animationClips.Length; i++)                 //For all animations
+        {
+            if(ac.animationClips[i].name == "Attack")        //If it has the same name as your clip
+            {
+                m_attackAnimTime = ac.animationClips[i].length;
+            }
+        }
     }
 
 
@@ -87,9 +104,13 @@ public class Enemy : MonoBehaviour {
     }
 
     void CheckAndAttackPlayer () {
+        SetIdle ();
         m_enemyState.ATTACK_IDLE = true;
+        m_enemyState.ATTACK = true;
+        StartCoroutine ("EnemyAtkDelay");
     }
 
+    // Play hurt animation and decrease health value
     void TakeDamage () {
         m_health -= 10;
         if (m_health < 0) {
@@ -107,6 +128,13 @@ public class Enemy : MonoBehaviour {
     void SetIdle () {
         m_enemyRb.velocity = Vector2.zero;
         m_enemyState.IS_IDLE = true;
+        m_enemyState.IS_WALKING = false;
+    }
+
+    // Set walk and idle state
+    void SetWalk () {
+        m_enemyState.IS_IDLE = false;
+        m_enemyState.IS_WALKING = true;
     }
 
     void OnTriggerEnter2D (Collider2D other) {
@@ -120,8 +148,10 @@ public class Enemy : MonoBehaviour {
             }
         }
 
-        // If player is nearby
+        // If player is nearby disable attack related coroutine before
         if (other.gameObject.tag == "Player") {
+            CheckIfEnemyHasToTurn (other.gameObject.transform.position);
+            StopCoroutine ("EnemyAtkDelay");
             CheckAndAttackPlayer ();
         }
 
@@ -131,10 +161,26 @@ public class Enemy : MonoBehaviour {
         }
     }
 
+    void CheckIfEnemyHasToTurn (Vector2 playerPosition) {
+        if (playerPosition.x > transform.position.x && transform.localScale.x == -1) {
+            FlipEnemy ();
+        }
+
+        if (playerPosition.x < transform.position.x && transform.localScale.x == 1) {
+            FlipEnemy ();
+        }
+    }
 
     IEnumerator EnemyWaitDelay () {
         yield return new WaitForSeconds(2f);
-        m_enemyState.IS_IDLE = false;
-        m_enemyState.IS_WALKING = true;
+        SetWalk ();
+    }
+
+    // Let the attack animation execute and after that disable attack and attackdelay state
+    IEnumerator EnemyAtkDelay () {
+        yield return new WaitForSeconds(m_attackAnimTime);
+        m_enemyState.ATTACK = false;
+        m_enemyState.ATTACK_IDLE = false;
+        SetWalk ();
     }
 }
