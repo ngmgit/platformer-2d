@@ -46,10 +46,10 @@ public class Enemy : MonoBehaviour {
     }
 
     void SetAttackAnimationTime () {
-        RuntimeAnimatorController ac = m_animator.runtimeAnimatorController;    //Get Animator controller
-        for(int i = 0; i<ac.animationClips.Length; i++)                 //For all animations
+        RuntimeAnimatorController ac = m_animator.runtimeAnimatorController;
+        for(int i = 0; i<ac.animationClips.Length; i++)
         {
-            if(ac.animationClips[i].name == "Attack")        //If it has the same name as your clip
+            if(ac.animationClips[i].name == "Attack")
             {
                 m_attackAnimTime = ac.animationClips[i].length;
             }
@@ -145,12 +145,15 @@ public class Enemy : MonoBehaviour {
                 FlipEnemy ();
                 SetIdle ();
                 StartCoroutine ("EnemyWaitDelay");
+            } else {
+                FlipEnemy ();
             }
         }
 
         // If player is nearby disable attack related coroutine before
         if (other.gameObject.tag == "Player") {
             CheckIfEnemyHasToTurn (other.gameObject.transform.position);
+            StopCoroutine ("EnemyWaitDelay");
             StopCoroutine ("EnemyAtkDelay");
             CheckAndAttackPlayer ();
         }
@@ -161,6 +164,7 @@ public class Enemy : MonoBehaviour {
         }
     }
 
+    // Evaluate world position of player and npc to make it flip if player attacks from back
     void CheckIfEnemyHasToTurn (Vector2 playerPosition) {
         if (playerPosition.x > transform.position.x && transform.localScale.x == -1) {
             FlipEnemy ();
@@ -181,6 +185,12 @@ public class Enemy : MonoBehaviour {
         yield return new WaitForSeconds(m_attackAnimTime);
         m_enemyState.ATTACK = false;
         m_enemyState.ATTACK_IDLE = false;
+
+        // To handle a glitch which makes the npc escape the platform
+        if ( m_GroundCollisionCheck == false) {
+            FlipEnemy ();
+        }
+
         SetWalk ();
     }
 }
