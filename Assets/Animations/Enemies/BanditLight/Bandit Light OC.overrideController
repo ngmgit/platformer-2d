@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!221 &22100000
+AnimatorOverrideController:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_Name: Bandit Light OC
+  m_Controller: {fileID: 9100000, guid: 8e993ac794d5a6f4583f1023567dd26c, type: 2}
+  m_Clips:
+  - m_OriginalClip: {fileID: 7400000, guid: beea8fc4f71a39e4f80fa1eba2d29443, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: ababc9e6b78006b40bd0d10572e3200b, type: 2}
+  - m_OriginalClip: {fileID: 7400000, guid: 85be09a32e32c7b48802979fea5aa832, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: 74f9d8e4a715bc744983d8981fd9c619, type: 2}
+  - m_OriginalClip: {fileID: 7400000, guid: c82680d133a17934a88ea4a595634500, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: 9a0fe83c5d3b01a42be486c0eb270226, type: 2}
+  - m_OriginalClip: {fileID: 7400000, guid: 2acd80ef84590c144a23dbacf5726725, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: a87e590c02554524ab7a46819b5e68ab, type: 2}
+  - m_OriginalClip: {fileID: 7400000, guid: aaebd84c063298744906a8824763f5d3, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: a0fa6e99752aa4e4ebdfd923fd661761, type: 2}
+  - m_OriginalClip: {fileID: 7400000, guid: 8cae39aa7ee37d0438f9b52ac68cca5b, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: 156d268ee6f70eb41b47c768a66bc72f, type: 2}
