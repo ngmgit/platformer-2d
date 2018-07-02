@@ -23,6 +23,7 @@ public class Enemy : MonoBehaviour {
     Vector2 m_direction;
     float groundRaySize;
     bool m_GroundCollisionCheck = true;
+    bool m_isNearObstacle = false;
 
     Rigidbody2D m_enemyRb;
     CapsuleCollider2D m_collider;
@@ -32,6 +33,7 @@ public class Enemy : MonoBehaviour {
 
     void Start() {
         currentSpeed = m_speed;
+        m_enemyState.IS_WALKING = true;
         m_direction = new Vector2(transform.right.x, transform.right.y);
     }
 
@@ -40,7 +42,6 @@ public class Enemy : MonoBehaviour {
         m_enemyRb = GetComponent <Rigidbody2D> ();
         m_collider = GetComponent <CapsuleCollider2D> ();
         m_enemyState = GetComponent <EnemyState> ();
-        m_enemyState.IS_WALKING = true;
         groundRaySize = m_collider.bounds.size.y * 0.75f;
         SetAttackAnimationTime ();
     }
@@ -62,7 +63,7 @@ public class Enemy : MonoBehaviour {
     }
 
     void FixedUpdate () {
-        CheckBoundariesAndTurn ();
+        CheckGroundEnds ();
     }
 
     void Move () {
@@ -74,6 +75,7 @@ public class Enemy : MonoBehaviour {
     // To turn user scale is changed and making use of scale value to check the direction
     // NOTE: Make sure the NPC sprite is aligned with the scale direction.
     void FlipEnemy () {
+        Debug.Log ("Testing");
 		Vector2 localScale = m_enemyRb.transform.localScale;
 		localScale.x *= -1;
 		transform.localScale = localScale;
@@ -81,25 +83,19 @@ public class Enemy : MonoBehaviour {
     }
 
     // Two raycasts pointing downwards on either sides of the NPC to make checks on floor ends
-    void CheckBoundariesAndTurn () {
+    void CheckGroundEnds () {
+        LayerMask targetLayer = 1 << LayerMask.NameToLayer("Platform");
         Vector2 bounds = m_collider.bounds.size;
         Vector2 origin1 = new Vector2 ( transform.position.x + bounds.x,  transform.position.y);
         Vector2 origin2 = new Vector2 (transform.position.x - bounds.x, transform.position.y);
 
-        RaycastHit2D groundCheckRayRight = Physics2D.Raycast (origin1, Vector2.down, groundRaySize);
-        RaycastHit2D groundCheckRayLeft = Physics2D.Raycast (origin2, Vector2.down, groundRaySize);
+        RaycastHit2D groundCheckRayRight = Physics2D.Raycast (origin1, Vector2.down, groundRaySize, targetLayer);
+        RaycastHit2D groundCheckRayLeft = Physics2D.Raycast (origin2, Vector2.down, groundRaySize, targetLayer);
 
         // If any of the raycasts is not on ground
         // Ground check bool is used to avoid the below 'if' statement to execute repeatedly until both of rays are back ground.
-        if ((groundCheckRayRight.collider == null || groundCheckRayLeft.collider == null) && m_GroundCollisionCheck) {
-            m_GroundCollisionCheck = false;
-            FlipEnemy ();
-            SetIdle ();
-            StartCoroutine ("EnemyWaitDelay");
-        }
-
-        if (groundCheckRayLeft.collider != null && groundCheckRayRight.collider != null) {
-            m_GroundCollisionCheck = true;
+        if ((groundCheckRayRight.collider == null || groundCheckRayLeft.collider == null) && !m_enemyState.ATTACK) {
+            CheckAndFlip (groundCheckRayLeft, groundCheckRayRight);
         }
     }
 
@@ -138,9 +134,17 @@ public class Enemy : MonoBehaviour {
     }
 
     void OnTriggerEnter2D (Collider2D other) {
+        // If player is nearby disable attack related coroutine before
+        if (other.gameObject.tag == "Player") {
+            CheckIfEnemyHasToTurn (other.gameObject.transform.position);
+            StopCoroutine ("EnemyWaitDelay");
+            StopCoroutine ("EnemyAtkDelay");
+            CheckAndAttackPlayer ();
+        }
 
         // Turn and wait for a few seconds before moving
         if (other.gameObject.tag == "Ground&Obstacles") {
+            m_isNearObstacle = true;
             if (!m_enemyState.ATTACK) {
                 FlipEnemy ();
                 SetIdle ();
@@ -150,17 +154,36 @@ public class Enemy : MonoBehaviour {
             }
         }
 
-        // If player is nearby disable attack related coroutine before
-        if (other.gameObject.tag == "Player") {
-            CheckIfEnemyHasToTurn (other.gameObject.transform.position);
-            StopCoroutine ("EnemyWaitDelay");
-            StopCoroutine ("EnemyAtkDelay");
-            CheckAndAttackPlayer ();
-        }
-
         // If player attacks with sword
         if (other.gameObject.name == "PlayerSword") {
             TakeDamage ();
+        }
+    }
+
+    void CheckAndFlip (RaycastHit2D LeftRay, RaycastHit2D RightRay) {
+        if (LeftRay.collider == null) {
+            // check if the player position is set to right side i.e scale = 1
+            Vector2 localScale = m_enemyRb.transform.localScale;
+            if (localScale.x != 1) {
+                localScale.x = 1;
+                transform.localScale = localScale;
+            }
+
+            if (m_direction.x != 1) {
+                m_direction = new Vector2(localScale.x , transform.right.y);
+            }
+        }
+
+        if (RightRay.collider == null) {
+            // check if player position is set to left sidee i.e scale = -1
+            Vector2 localScale = m_enemyRb.transform.localScale;
+		    if (localScale.x != -1) {
+                localScale.x = -1;
+                transform.localScale = localScale;
+            }
+            if (m_direction.x != -1) {
+                m_direction = new Vector2(localScale.x , transform.right.y);
+            }
         }
     }
 
@@ -185,12 +208,6 @@ public class Enemy : MonoBehaviour {
         yield return new WaitForSeconds(m_attackAnimTime);
         m_enemyState.ATTACK = false;
         m_enemyState.ATTACK_IDLE = false;
-
-        // To handle a glitch which makes the npc escape the platform
-        if ( m_GroundCollisionCheck == false) {
-            FlipEnemy ();
-        }
-
         SetWalk ();
     }
 }
