@@ -5261,6 +5261,48 @@ Transform:
   m_PrefabParentObject: {fileID: 4814795456789394, guid: ef24b453c1275fe48bfdd7a03ab6bfe6,
     type: 2}
   m_PrefabInternal: {fileID: 598540173}
+--- !u!1001 &646600187
+Prefab:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 4397963775218742, guid: 2f477e6c9b9a6814db1e41149f808e68, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: 2.36
+      objectReference: {fileID: 0}
+    - target: {fileID: 4397963775218742, guid: 2f477e6c9b9a6814db1e41149f808e68, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: 11.94
+      objectReference: {fileID: 0}
+    - target: {fileID: 4397963775218742, guid: 2f477e6c9b9a6814db1e41149f808e68, type: 2}
+      propertyPath: m_LocalPosition.z
+      value: 0.03085544
+      objectReference: {fileID: 0}
+    - target: {fileID: 4397963775218742, guid: 2f477e6c9b9a6814db1e41149f808e68, type: 2}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4397963775218742, guid: 2f477e6c9b9a6814db1e41149f808e68, type: 2}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4397963775218742, guid: 2f477e6c9b9a6814db1e41149f808e68, type: 2}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4397963775218742, guid: 2f477e6c9b9a6814db1e41149f808e68, type: 2}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4397963775218742, guid: 2f477e6c9b9a6814db1e41149f808e68, type: 2}
+      propertyPath: m_RootOrder
+      value: 9
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 100100000, guid: 2f477e6c9b9a6814db1e41149f808e68, type: 2}
+  m_IsPrefabParent: 0
 --- !u!4 &729027269 stripped
 Transform:
   m_PrefabParentObject: {fileID: 4117925580607562, guid: d6afbb7622023a04396c86072470141e,
