@@ -75,7 +75,6 @@ public class Enemy : MonoBehaviour {
     // To turn user scale is changed and making use of scale value to check the direction
     // NOTE: Make sure the NPC sprite is aligned with the scale direction.
     void FlipEnemy () {
-        Debug.Log ("Testing");
 		Vector2 localScale = m_enemyRb.transform.localScale;
 		localScale.x *= -1;
 		transform.localScale = localScale;
