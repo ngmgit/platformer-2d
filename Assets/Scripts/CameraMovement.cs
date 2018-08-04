@@ -3,38 +3,79 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [System.Serializable]
-public class CameraClamps {
-	public float xMin = Mathf.Infinity; 
-	public float xMax = Mathf.Infinity; 
-	public float yMin = Mathf.Infinity; 
-	public float yMax = Mathf.Infinity;
+public class CameraFollowThresholds {
+	public Vector2 min;
+	public Vector2 max;
 }
 
 public class CameraMovement : MonoBehaviour {
 
 	public Transform m_playerTrans;
-	public CameraClamps m_cameraClamps;
+	public Transform minClamp;
+	public Transform maxClamp;
+	public CameraFollowThresholds cameraThresholds;
 	public float m_smoothTime = 0.15f;
 
 	private Vector3 m_velocity = Vector2.zero;
+	private Vector2 minClampCalcPos;
+	private Vector3 maxClampCalcPos;
+	private InputController m_input;
+	private bool boundsTouched;
+
+	void Awake () {
+		GameObject PlayerObj = GameObject.FindGameObjectWithTag("Player");
+		if (PlayerObj) {
+			m_input = PlayerObj.GetComponent<InputController> ();
+		}
+	}
 
 	// Use this for initialization
 	void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void FixedUpdate () {
-		float xMinClamp = m_cameraClamps.xMin != Mathf.Infinity ? m_cameraClamps.xMin : m_playerTrans.position.x;
-		float xMaxClamp = m_cameraClamps.xMax != Mathf.Infinity ? m_cameraClamps.xMax : m_playerTrans.position.x;
-		float yMinClamp = m_cameraClamps.yMin != Mathf.Infinity ? m_cameraClamps.yMin : m_playerTrans.position.y;
-		float yMaxClamp = m_cameraClamps.yMax != Mathf.Infinity ? m_cameraClamps.yMin : m_playerTrans.position.y;
+		float screenHeightInUnits = Camera.main.orthographicSize * 2;
+		float screenWidthInUnits = screenHeightInUnits * Screen.width/ Screen.height;
 
-		float x = Mathf.Clamp (m_playerTrans.position.x, xMinClamp, xMaxClamp);
-		float y = Mathf.Clamp (m_playerTrans.position.y, yMinClamp, yMaxClamp);
-		
+		//based on camera aspect ratio and boundary limits get the camera position
+		minClampCalcPos.x = minClamp.position.x + screenWidthInUnits / 2;
+		maxClampCalcPos.x = maxClamp.position.x - screenWidthInUnits / 2;
+		minClampCalcPos.y = minClamp.position.y + screenHeightInUnits / 2;
+		maxClampCalcPos.y = maxClamp.position.y - screenHeightInUnits / 2;
+	}
+
+	void Update () {
+		PlayerTouchesBounds ();
+	}
+
+	void FixedUpdate () {
+		float x = Mathf.Clamp (m_playerTrans.position.x, minClampCalcPos.x, maxClampCalcPos.x);
+		float y = this.transform.position.y;
+
+		// above threshold
+		if (boundsTouched) {
+			y = Mathf.Clamp (m_playerTrans.position.y, minClampCalcPos.y, maxClampCalcPos.y);
+
+		// below threshold
+		} else if (m_playerTrans.position.y < transform.position.y - cameraThresholds.min.y) {
+			y = Mathf.Clamp (m_playerTrans.position.y, minClampCalcPos.y, maxClampCalcPos.y);
+		}
+
 		Vector3 targetPos = new Vector3 (x, y, this.transform.position.z);
-		//this.transform.position = new Vector3 (x, y, this.transform.position.z);
 		this.transform.position = Vector3.SmoothDamp (this.transform.position, targetPos, ref m_velocity, m_smoothTime, Mathf.Infinity, Time.fixedDeltaTime);
+
+	}
+
+	// Set flag to track player position
+	// Also change smooth time when camera tracks player and still in flight.
+	void PlayerTouchesBounds () {
+		if (m_playerTrans.position.y >= transform.position.y + cameraThresholds.max.y) {
+			if (!boundsTouched) {
+				m_smoothTime *= 3;
+			}
+			boundsTouched = true;
+		}
+
+		if (boundsTouched && m_input.isFalling) {
+			m_smoothTime /= 3;
+			boundsTouched = false;
+		}
 	}
 }

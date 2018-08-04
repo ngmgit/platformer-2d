@@ -30,7 +30,7 @@ public class BackgroundScroller : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		float cameraDeltaX = LastCameraX - Camera.main.transform.position.x;
-		Debug.Log (cameraDeltaX);
+
 		transform.position += new Vector3 (cameraDeltaX * parallaxSpeed, 0, 0) ;
 		LastCameraX = Camera.main.transform.position.x;
 
