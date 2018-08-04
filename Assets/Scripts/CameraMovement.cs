@@ -21,6 +21,7 @@ public class CameraMovement : MonoBehaviour {
 	private Vector3 maxClampCalcPos;
 	private InputController m_input;
 	private bool boundsTouched;
+	public float currentSmoothDamp;
 
 	void Awake () {
 		GameObject PlayerObj = GameObject.FindGameObjectWithTag("Player");
@@ -31,6 +32,7 @@ public class CameraMovement : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+		currentSmoothDamp = m_smoothTime;
 		float screenHeightInUnits = Camera.main.orthographicSize * 2;
 		float screenWidthInUnits = screenHeightInUnits * Screen.width/ Screen.height;
 
@@ -44,7 +46,6 @@ public class CameraMovement : MonoBehaviour {
 	void Update () {
 		PlayerTouchesBounds ();
 	}
-
 	void FixedUpdate () {
 		float x = Mathf.Clamp (m_playerTrans.position.x, minClampCalcPos.x, maxClampCalcPos.x);
 		float y = this.transform.position.y;
@@ -59,7 +60,7 @@ public class CameraMovement : MonoBehaviour {
 		}
 
 		Vector3 targetPos = new Vector3 (x, y, this.transform.position.z);
-		this.transform.position = Vector3.SmoothDamp (this.transform.position, targetPos, ref m_velocity, m_smoothTime, Mathf.Infinity, Time.fixedDeltaTime);
+		this.transform.position = Vector3.SmoothDamp (this.transform.position, targetPos, ref m_velocity, currentSmoothDamp, Mathf.Infinity, Time.fixedDeltaTime);
 
 	}
 
@@ -68,13 +69,13 @@ public class CameraMovement : MonoBehaviour {
 	void PlayerTouchesBounds () {
 		if (m_playerTrans.position.y >= transform.position.y + cameraThresholds.max.y) {
 			if (!boundsTouched) {
-				m_smoothTime *= 3;
+				currentSmoothDamp = m_smoothTime * 4f;
 			}
 			boundsTouched = true;
 		}
 
 		if (boundsTouched && m_input.isFalling) {
-			m_smoothTime /= 3;
+			currentSmoothDamp = m_smoothTime;
 			boundsTouched = false;
 		}
 	}

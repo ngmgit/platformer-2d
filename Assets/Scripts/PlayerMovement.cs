@@ -15,11 +15,10 @@ public class PlayerMovement : MonoBehaviour {
 	private SpriteRenderer m_playerSpriteRenderer;
 
 	private float m_moveX;
-	private bool m_jumpPressed = false;
 	private Vector2 prevPosition;
 
 	// Use this for initialization
-	void Start () {
+	void Awake () {
 		m_input = GetComponent <InputController> ();
 		m_playerRb = GetComponent <Rigidbody2D> ();
 		m_playerSpriteRenderer = GetComponent <SpriteRenderer> ();

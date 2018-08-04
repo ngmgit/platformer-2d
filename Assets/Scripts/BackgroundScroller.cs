@@ -5,24 +5,26 @@ using UnityEngine;
 public class BackgroundScroller : MonoBehaviour {
 	public float parallaxSpeed = 0.125f;
 
-	private Transform cameraTransform;
 	private Transform[] bglayers;
-	private float viewZone = 10;
 	private int leftIndex;
 	private int rightIndex;
 	private float positionOffset;
 	private float LastCameraX;
 
-	// Use this for initialization
-	void Start () {
-		cameraTransform = Camera.main.transform;
+	void Awake () {
 		bglayers = new Transform[transform.childCount];
 
 		for (int i = 0; i < transform.childCount; i++) {
 			bglayers[i] = transform.GetChild(i);
 		}
-		LastCameraX = Camera.main.transform.position.x;
+
 		positionOffset =  bglayers[0].GetComponent<SpriteRenderer>().bounds.size.x;
+	}
+
+	// Use this for initialization
+	void Start () {
+		LastCameraX = Camera.main.transform.position.x;
+
 		leftIndex = 0;
 		rightIndex = bglayers.Length - 1;
 	}

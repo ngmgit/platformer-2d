@@ -22,8 +22,6 @@ public class Enemy : MonoBehaviour {
     float currentSpeed;
     Vector2 m_direction;
     float groundRaySize;
-    bool m_GroundCollisionCheck = true;
-    bool m_isNearObstacle = false;
 
     Rigidbody2D m_enemyRb;
     CapsuleCollider2D m_collider;
@@ -143,7 +141,6 @@ public class Enemy : MonoBehaviour {
 
         // Turn and wait for a few seconds before moving
         if (other.gameObject.tag == "Ground&Obstacles") {
-            m_isNearObstacle = true;
             if (!m_enemyState.ATTACK) {
                 FlipEnemy ();
                 SetIdle ();

@@ -1,4 +1,4 @@
-*Just a small project to leran 2d game creation in Unity3D.<br/>
+*Just a personal project to learn 2d game creation in Unity3D.<br/>
 *Using Unity 2017.4.5 LTS.<br/>
 *Used open source assets, see below for info and credits.
 
