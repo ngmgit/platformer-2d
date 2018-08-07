@@ -37,6 +37,16 @@ public class PlayerMovement : MonoBehaviour {
 	void FixedUpdate () {
 		MovePlayer ();
 		PlayerRaycast ();
+		ModifyGravity();
+	}
+
+	void ModifyGravity () {
+		if (m_input.isFalling) {
+			m_playerRb.gravityScale = 2.5f;
+		}
+		if (m_input.isOnGround) {
+			m_playerRb.gravityScale = 4f;
+		}
 	}
 
 	void MovePlayer () {

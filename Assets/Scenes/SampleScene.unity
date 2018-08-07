@@ -340,7 +340,7 @@ Camera:
   m_CullingMask:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_RenderingPath: 0
+  m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
   m_TargetEye: 3
@@ -10590,7 +10590,7 @@ Prefab:
     m_Modifications:
     - target: {fileID: 4533955678336492, guid: 45cd80f7b969bf64e9dc3a1e8bad4f98, type: 2}
       propertyPath: m_LocalPosition.x
-      value: 29.8
+      value: -217.4
       objectReference: {fileID: 0}
     - target: {fileID: 4533955678336492, guid: 45cd80f7b969bf64e9dc3a1e8bad4f98, type: 2}
       propertyPath: m_LocalPosition.y
@@ -12293,6 +12293,47 @@ Prefab:
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: d6afbb7622023a04396c86072470141e, type: 2}
   m_IsPrefabParent: 0
+--- !u!1 &1475479402
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 1475479403}
+  - component: {fileID: 1475479404}
+  m_Layer: 0
+  m_Name: AttackTrigger
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1475479403
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1475479402}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 431900074}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &1475479404
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1475479402}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 0
+  serializedVersion: 2
+  m_Size: {x: 1.9669504, y: 2.5310059, z: 1}
+  m_Center: {x: 0.7252135, y: 0.18533134, z: 0}
 --- !u!4 &1603405799 stripped
 Transform:
   m_PrefabParentObject: {fileID: 4814795456789394, guid: ef24b453c1275fe48bfdd7a03ab6bfe6,

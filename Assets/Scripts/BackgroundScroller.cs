@@ -46,7 +46,6 @@ public class BackgroundScroller : MonoBehaviour {
 	}
 
 	private void ScrollLeft () {
-		transform.localScale = new Vector2 (transform.localScale.x * -1, transform.localScale.y);
 		bglayers[rightIndex].transform.position = new Vector2 (bglayers [leftIndex].position.x - positionOffset, bglayers[leftIndex].position.y);
 		bglayers[rightIndex].localScale = new Vector2 (bglayers[rightIndex].localScale.x * -1, bglayers[rightIndex].localScale.y);
 		leftIndex = rightIndex;
@@ -57,7 +56,6 @@ public class BackgroundScroller : MonoBehaviour {
 	}
 
 	private void scrollRight () {
-
 		bglayers[leftIndex].transform.position = new Vector2 (bglayers [rightIndex].position.x + positionOffset, bglayers[rightIndex].position.y);
 		bglayers[leftIndex].localScale = new Vector2 (bglayers[leftIndex].localScale.x * -1, bglayers[leftIndex].localScale.y);
 		rightIndex = leftIndex;

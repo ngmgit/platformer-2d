@@ -23,5 +23,10 @@ public class InputController : MonoBehaviour {
 		m_jumpPressed = Input.GetKeyDown (KeyCode.W);
 		m_crouchPressed  = Input.GetKey (KeyCode.S);
 		m_slidePressed = Input.GetKeyDown (KeyCode.LeftShift);
+
+		if (Input.GetKey("escape"))
+        {
+            Application.Quit();
+        }
 	}
 }

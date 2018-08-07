@@ -32,6 +32,8 @@ public class CameraMovement : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+		transform.position = new Vector3 (m_playerTrans.position.x, m_playerTrans.position.y, transform.position.z);;
+
 		currentSmoothDamp = m_smoothTime;
 		float screenHeightInUnits = Camera.main.orthographicSize * 2;
 		float screenWidthInUnits = screenHeightInUnits * Screen.width/ Screen.height;
@@ -43,12 +45,11 @@ public class CameraMovement : MonoBehaviour {
 		maxClampCalcPos.y = maxClamp.position.y - screenHeightInUnits / 2;
 	}
 
-	void Update () {
-		PlayerTouchesBounds ();
-	}
 	void FixedUpdate () {
 		float x = Mathf.Clamp (m_playerTrans.position.x, minClampCalcPos.x, maxClampCalcPos.x);
 		float y = this.transform.position.y;
+
+		PlayerTouchesBounds ();
 
 		// above threshold
 		if (boundsTouched) {
@@ -74,7 +75,7 @@ public class CameraMovement : MonoBehaviour {
 			boundsTouched = true;
 		}
 
-		if (boundsTouched && m_input.isFalling) {
+		if (boundsTouched && (m_input.isFalling || !m_input.isInFlight)) {
 			currentSmoothDamp = m_smoothTime;
 			boundsTouched = false;
 		}
