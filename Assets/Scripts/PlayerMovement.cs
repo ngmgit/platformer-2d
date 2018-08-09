@@ -10,9 +10,11 @@ public class PlayerMovement : MonoBehaviour {
 	public int playerSpeed = 10;
 	public int jumpForce = 1250;
 	public float downRaySize = 0.8f;
+	public Transform swordTransform;
 
 	private Rigidbody2D m_playerRb;
 	private SpriteRenderer m_playerSpriteRenderer;
+	private Animator m_animator;
 
 	private float m_moveX;
 	private Vector2 prevPosition;
@@ -22,6 +24,7 @@ public class PlayerMovement : MonoBehaviour {
 		m_input = GetComponent <InputController> ();
 		m_playerRb = GetComponent <Rigidbody2D> ();
 		m_playerSpriteRenderer = GetComponent <SpriteRenderer> ();
+		m_animator = GetComponent <Animator> ();
 		prevPosition = transform.position;
 	}
 
@@ -59,13 +62,24 @@ public class PlayerMovement : MonoBehaviour {
 			if (m_input.m_jumpPressed == true && m_input.isOnGround == true) {
 				Jump();
 			}
-			m_playerRb.velocity = new Vector2(m_moveX * playerSpeed, m_playerRb.velocity.y);
+
+			bool attack1Active = m_animator.GetCurrentAnimatorStateInfo(0).IsName("Attack State.Attack1");
+			bool attack2Active = m_animator.GetCurrentAnimatorStateInfo(0).IsName("Attack State.Attack2");
+
+			if (!(attack1Active || attack2Active)) {
+				m_playerRb.velocity = new Vector2(m_moveX * playerSpeed, m_playerRb.velocity.y);
+			} else {
+				m_playerRb.velocity = Vector2.zero;
+			}
+
 		}
 
 		// flip sprite based on direction facing
 		if (m_moveX < 0.0f) {
 			m_playerSpriteRenderer.flipX = true;
+			swordTransform.localScale = new Vector2 (-1, 1);
 		} else if (m_moveX > 0.0f) {
+			swordTransform.localScale = new Vector2 (1, 1);
 			m_playerSpriteRenderer.flipX = false;
 		}
 

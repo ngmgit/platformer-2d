@@ -24,11 +24,10 @@ GameObject:
   - component: {fileID: 50399528823953982}
   - component: {fileID: 70083048801106534}
   - component: {fileID: 95486585781134682}
-  - component: {fileID: 114347785084546798}
   - component: {fileID: 114675407797707304}
   m_Layer: 0
   m_Name: Bandit Heavy
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -208,23 +207,6 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
---- !u!114 &114347785084546798
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1060333236504586}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ba96c04f2248f774aabc4fde5fc1151c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  IS_IDLE: 0
-  IS_WALKING: 0
-  ATTACK_IDLE: 0
-  ATTACK: 0
-  HURT: 0
-  DIE: 0
 --- !u!114 &114514177567742530
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -239,7 +221,8 @@ MonoBehaviour:
   m_speed: 4
   m_type: 2
   m_damage: 20
-  m_health: 0
+  isCollidingWithObstacle: 0
+  m_health: 100
 --- !u!114 &114675407797707304
 MonoBehaviour:
   m_ObjectHideFlags: 1

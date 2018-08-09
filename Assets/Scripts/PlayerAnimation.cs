@@ -15,13 +15,19 @@ public class PlayerAnimation : MonoBehaviour {
 		public static string isCrouching 	= "isCrouching";
 		public static string isSliding 	 	= "isSliding";
 		public static string isInFlight  	= "isInFlight";
+		public static string Attack         = "Attack";
+		public static string AttackType     = "AttackType";
 	};
 
 	bool prevJumpState;
+	int currentAttackT;
+
 	// Use this for initialization
 	void Awake () {
 		m_animator = GetComponent <Animator> ();
 		m_input = GetComponent <InputController>();
+
+		currentAttackT = 0;
 	}
 
 	// Update is called once per frame
@@ -34,7 +40,8 @@ public class PlayerAnimation : MonoBehaviour {
 
 		SetCrouch ();
 		// SetSlide ();
-		// SetAttack ();
+
+		SetAttack ();
 	}
 
 
@@ -63,5 +70,18 @@ public class PlayerAnimation : MonoBehaviour {
 
 	void SetCrouch () {
 		m_animator.SetBool (TransitionCoditions.isCrouching, m_input.m_crouchPressed);
+	}
+
+	void SetAttack () {
+		if (m_input.m_attack1) {
+			currentAttackT = currentAttackT == 0? 1: 0;
+		}
+
+		if (m_input.m_attack2) {
+			currentAttackT = 2;
+		}
+
+		m_animator.SetBool (TransitionCoditions.Attack, m_input.m_attack1 || m_input.m_attack2);
+		m_animator.SetInteger (TransitionCoditions.AttackType, currentAttackT);
 	}
 }

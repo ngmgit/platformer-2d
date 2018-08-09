@@ -24,11 +24,10 @@ GameObject:
   - component: {fileID: 50594936913735690}
   - component: {fileID: 70350876496339752}
   - component: {fileID: 95206914462920576}
-  - component: {fileID: 114514764930258036}
   - component: {fileID: 114290708048578522}
   m_Layer: 0
   m_Name: Bandit Light
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -233,24 +232,8 @@ MonoBehaviour:
   m_speed: 2.5
   m_type: 2
   m_damage: 20
-  m_health: 0
---- !u!114 &114514764930258036
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1192489733589390}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ba96c04f2248f774aabc4fde5fc1151c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  IS_IDLE: 0
-  IS_WALKING: 0
-  ATTACK_IDLE: 0
-  ATTACK: 0
-  HURT: 0
-  DIE: 0
+  isCollidingWithObstacle: 0
+  m_health: 100
 --- !u!212 &212130308378744506
 SpriteRenderer:
   m_ObjectHideFlags: 1

@@ -6,6 +6,8 @@ TagManager:
   tags:
   - Ground&Obstacles
   - Pickups
+  - PlayerSword
+  - Enemy
   layers:
   - Default
   - TransparentFX

@@ -14,11 +14,11 @@ public class Enemy : MonoBehaviour {
     public float m_speed;
     public EnemyType m_type;
     public int m_damage;
+    public bool isCollidingWithObstacle;
 
     [SerializeField]
     int m_health;
 
-    float m_attackAnimTime;
     float currentSpeed;
     Vector2 m_direction;
     float groundRaySize;
@@ -26,12 +26,9 @@ public class Enemy : MonoBehaviour {
     Rigidbody2D m_enemyRb;
     CapsuleCollider2D m_collider;
     Animator m_animator;
-    EnemyState m_enemyState;
-
 
     void Start() {
         currentSpeed = m_speed;
-        m_enemyState.IS_WALKING = true;
         m_direction = new Vector2(transform.right.x, transform.right.y);
     }
 
@@ -39,40 +36,18 @@ public class Enemy : MonoBehaviour {
         m_animator = GetComponent <Animator> ();
         m_enemyRb = GetComponent <Rigidbody2D> ();
         m_collider = GetComponent <CapsuleCollider2D> ();
-        m_enemyState = GetComponent <EnemyState> ();
+        m_animator.SetBool (EnemyAnimation.TransitionCoditions.Walk, true);
         groundRaySize = m_collider.bounds.size.y * 0.75f;
-        SetAttackAnimationTime ();
+        Debug.Log("");
     }
 
-    void SetAttackAnimationTime () {
-        RuntimeAnimatorController ac = m_animator.runtimeAnimatorController;
-        for(int i = 0; i<ac.animationClips.Length; i++)
-        {
-            if(ac.animationClips[i].name == "Attack")
-            {
-                m_attackAnimTime = ac.animationClips[i].length;
-            }
-        }
-    }
-
-
-    void Update () {
-        Move ();
-    }
-
-    void FixedUpdate () {
-        CheckGroundEnds ();
-    }
-
-    void Move () {
-        if (!m_enemyState.IS_IDLE) {
-            m_enemyRb.velocity = m_direction * currentSpeed;
-        }
+    public void Move () {
+        m_enemyRb.velocity = m_direction * currentSpeed;
     }
 
     // To turn user scale is changed and making use of scale value to check the direction
     // NOTE: Make sure the NPC sprite is aligned with the scale direction.
-    void FlipEnemy () {
+    public void FlipEnemy () {
 		Vector2 localScale = m_enemyRb.transform.localScale;
 		localScale.x *= -1;
 		transform.localScale = localScale;
@@ -80,7 +55,7 @@ public class Enemy : MonoBehaviour {
     }
 
     // Two raycasts pointing downwards on either sides of the NPC to make checks on floor ends
-    void CheckGroundEnds () {
+    public void CheckGroundEnds () {
         LayerMask targetLayer = 1 << LayerMask.NameToLayer("Platform");
         Vector2 bounds = m_collider.bounds.size;
         Vector2 origin1 = new Vector2 ( transform.position.x + bounds.x,  transform.position.y);
@@ -91,68 +66,8 @@ public class Enemy : MonoBehaviour {
 
         // If any of the raycasts is not on ground
         // Ground check bool is used to avoid the below 'if' statement to execute repeatedly until both of rays are back ground.
-        if ((groundCheckRayRight.collider == null || groundCheckRayLeft.collider == null) && !m_enemyState.ATTACK) {
+        if ((groundCheckRayRight.collider == null || groundCheckRayLeft.collider == null)) {
             CheckAndFlip (groundCheckRayLeft, groundCheckRayRight);
-        }
-    }
-
-    void CheckAndAttackPlayer () {
-        SetIdle ();
-        m_enemyState.ATTACK_IDLE = true;
-        m_enemyState.ATTACK = true;
-        StartCoroutine ("EnemyAtkDelay");
-    }
-
-    // Play hurt animation and decrease health value
-    void TakeDamage () {
-        m_health -= 10;
-        if (m_health < 0) {
-            Die ();
-        }
-        m_enemyState.HURT = true;
-    }
-
-    void Die () {
-        SetIdle ();
-        m_enemyState.DIE = true;
-    }
-
-    // Make idle state true and velocity set to zero
-    void SetIdle () {
-        m_enemyRb.velocity = Vector2.zero;
-        m_enemyState.IS_IDLE = true;
-        m_enemyState.IS_WALKING = false;
-    }
-
-    // Set walk and idle state
-    void SetWalk () {
-        m_enemyState.IS_IDLE = false;
-        m_enemyState.IS_WALKING = true;
-    }
-
-    void OnTriggerEnter2D (Collider2D other) {
-        // If player is nearby disable attack related coroutine before
-        if (other.gameObject.tag == "Player") {
-            CheckIfEnemyHasToTurn (other.gameObject.transform.position);
-            StopCoroutine ("EnemyWaitDelay");
-            StopCoroutine ("EnemyAtkDelay");
-            CheckAndAttackPlayer ();
-        }
-
-        // Turn and wait for a few seconds before moving
-        if (other.gameObject.tag == "Ground&Obstacles") {
-            if (!m_enemyState.ATTACK) {
-                FlipEnemy ();
-                SetIdle ();
-                StartCoroutine ("EnemyWaitDelay");
-            } else {
-                FlipEnemy ();
-            }
-        }
-
-        // If player attacks with sword
-        if (other.gameObject.name == "PlayerSword") {
-            TakeDamage ();
         }
     }
 
@@ -183,27 +98,64 @@ public class Enemy : MonoBehaviour {
         }
     }
 
-    // Evaluate world position of player and npc to make it flip if player attacks from back
-    void CheckIfEnemyHasToTurn (Vector2 playerPosition) {
+    public void CheckIfEnemyHasToTurn (Vector2 playerPosition) {
         if (playerPosition.x > transform.position.x && transform.localScale.x == -1) {
             FlipEnemy ();
         }
-
         if (playerPosition.x < transform.position.x && transform.localScale.x == 1) {
             FlipEnemy ();
         }
     }
 
-    IEnumerator EnemyWaitDelay () {
-        yield return new WaitForSeconds(2f);
-        SetWalk ();
+    // Play hurt animation and decrease health value
+    void TakeDamage () {
+        m_health -= 1;
+        if (m_health < 0) {
+            Die ();
+        }
     }
 
-    // Let the attack animation execute and after that disable attack and attackdelay state
-    IEnumerator EnemyAtkDelay () {
-        yield return new WaitForSeconds(m_attackAnimTime);
-        m_enemyState.ATTACK = false;
-        m_enemyState.ATTACK_IDLE = false;
-        SetWalk ();
+    void Die () {
+        SetIdle ();
+    }
+
+    public void SetIdle () {
+        m_enemyRb.velocity = Vector2.zero;
+    }
+
+    public void IdleDelay () {
+        StartCoroutine("IdleDelayCR");
+    }
+
+    IEnumerator IdleDelayCR () {
+        yield return new WaitForSeconds(2);
+        m_animator.SetBool (EnemyAnimation.TransitionCoditions.Walk, true);
+    }
+
+    void OnTriggerEnter2D (Collider2D other) {
+        // If player is nearby disable attack related coroutine before
+        if (other.gameObject.tag == "Player") {
+            // Trigger Attack Transition
+            StopCoroutine("IdleDelayCR");
+            m_animator.SetBool(EnemyAnimation.TransitionCoditions.AtkIdle, true);
+        }
+
+        // Turn and wait for a few seconds before moving
+        if (other.gameObject.tag == "Ground&Obstacles") {
+            isCollidingWithObstacle = true;
+            m_animator.SetBool (EnemyAnimation.TransitionCoditions.Idle, true);
+        }
+
+        // If player attacks with sword
+        if (other.gameObject.tag == "PlayerSword") {
+            StopCoroutine("IdleDelayCR");
+            TakeDamage();
+        }
+    }
+
+    void OnTriggerExit2D (Collider2D other) {
+       if (other.gameObject.tag == "Ground&Obstacles") {
+            isCollidingWithObstacle = false;
+        }
     }
 }
