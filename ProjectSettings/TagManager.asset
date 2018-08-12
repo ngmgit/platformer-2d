@@ -8,6 +8,7 @@ TagManager:
   - Pickups
   - PlayerSword
   - Enemy
+  - EnemyWeaponTrigger
   layers:
   - Default
   - TransparentFX

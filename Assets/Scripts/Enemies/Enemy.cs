@@ -38,7 +38,6 @@ public class Enemy : MonoBehaviour {
         m_collider = GetComponent <CapsuleCollider2D> ();
         m_animator.SetBool (EnemyAnimation.TransitionCoditions.Walk, true);
         groundRaySize = m_collider.bounds.size.y * 0.75f;
-        Debug.Log("");
     }
 
     public void Move () {
@@ -149,6 +148,9 @@ public class Enemy : MonoBehaviour {
         // If player attacks with sword
         if (other.gameObject.tag == "PlayerSword") {
             StopCoroutine("IdleDelayCR");
+            if (m_animator.GetCurrentAnimatorStateInfo(0).IsName("Idle")) {
+                m_animator.SetBool(EnemyAnimation.TransitionCoditions.AtkIdle, true);
+            }
             TakeDamage();
         }
     }

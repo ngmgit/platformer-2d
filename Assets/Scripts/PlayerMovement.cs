@@ -15,9 +15,13 @@ public class PlayerMovement : MonoBehaviour {
 	private Rigidbody2D m_playerRb;
 	private SpriteRenderer m_playerSpriteRenderer;
 	private Animator m_animator;
+	private GameManager gameManagerScript;
+	private bool forceFixFlag;
 
 	private float m_moveX;
 	private Vector2 prevPosition;
+	private int MAX_HEALTH = 100;
+	private float currentHealth;
 
 	// Use this for initialization
 	void Awake () {
@@ -25,7 +29,10 @@ public class PlayerMovement : MonoBehaviour {
 		m_playerRb = GetComponent <Rigidbody2D> ();
 		m_playerSpriteRenderer = GetComponent <SpriteRenderer> ();
 		m_animator = GetComponent <Animator> ();
+		gameManagerScript = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameManager> ();
 		prevPosition = transform.position;
+		currentHealth = MAX_HEALTH;
+		forceFixFlag = true;
 	}
 
 	void Update () {
@@ -41,12 +48,17 @@ public class PlayerMovement : MonoBehaviour {
 		MovePlayer ();
 		PlayerRaycast ();
 		ModifyGravity();
+
+		if (!m_input.isOnGround) {
+			forceFixFlag = true;
+		}
 	}
 
 	void ModifyGravity () {
 		if (m_input.isFalling) {
 			m_playerRb.gravityScale = 2.5f;
 		}
+
 		if (m_input.isOnGround) {
 			m_playerRb.gravityScale = 4f;
 		}
@@ -59,7 +71,7 @@ public class PlayerMovement : MonoBehaviour {
 				m_playerRb.velocity = Vector2.zero;
 			}
 		} else {
-			if (m_input.m_jumpPressed == true && m_input.isOnGround == true) {
+			if (m_input.m_jumpPressed && m_input.isOnGround) {
 				Jump();
 			}
 
@@ -87,7 +99,8 @@ public class PlayerMovement : MonoBehaviour {
 
 	void Jump () {
 		m_input.m_jumpPressed = false;
-		if (m_input.isOnGround) {
+		if (m_input.isOnGround && forceFixFlag) {
+			forceFixFlag = false;
 			m_playerRb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
 		}
 		SetGroundStatus (false);
@@ -140,5 +153,22 @@ public class PlayerMovement : MonoBehaviour {
 
 	void SetGroundStatus (bool m_status) {
 		m_input.isOnGround = m_status;
+	}
+
+	void DamagePlayer () {
+		currentHealth -= 15f;
+		float healthRatio = currentHealth / MAX_HEALTH;
+
+		gameManagerScript.SetPlayerHealth(healthRatio);
+
+		if (currentHealth <= 0) {
+			currentHealth = MAX_HEALTH;
+		}
+	}
+
+	void OnTriggerEnter2D (Collider2D other) {
+		if (other.gameObject.tag == "EnemyWeaponTrigger") {
+			DamagePlayer ();
+		}
 	}
 }

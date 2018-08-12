@@ -5,7 +5,6 @@ using UnityEngine;
 public class InputController : MonoBehaviour {
 
 	// Key Bindings
-	[HideInInspector] public float m_vertical;
 	[HideInInspector] public float m_horizontal;
 	[HideInInspector] public bool m_jumpPressed;
 	[HideInInspector] public bool m_crouchPressed;
@@ -20,13 +19,11 @@ public class InputController : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
-		m_horizontal = Input.GetAxis ("Horizontal");
-		m_vertical = Input.GetAxis ("Vertical");
-		m_jumpPressed = Input.GetKeyDown (KeyCode.W);
-		m_crouchPressed  = Input.GetKey (KeyCode.S);
-		m_slidePressed = Input.GetKeyDown (KeyCode.LeftShift);
-		m_attack1 = Input.GetKeyDown (KeyCode.Mouse0);
-		m_attack2 = Input.GetKeyDown (KeyCode.Mouse1);
+		m_horizontal = InputManager.Forward();
+		m_jumpPressed = InputManager.Jump();
+		m_crouchPressed  = InputManager.Crouch();
+		m_attack1 = InputManager.AttackPrimary();
+		m_attack2 = InputManager.AttackSecondary();
 
 		if (Input.GetKey("escape"))
         {

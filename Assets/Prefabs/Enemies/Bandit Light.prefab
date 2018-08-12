@@ -59,7 +59,7 @@ GameObject:
   - component: {fileID: 61800350451704728}
   m_Layer: 0
   m_Name: AttackTrigger
-  m_TagString: Untagged
+  m_TagString: EnemyWeaponTrigger
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
