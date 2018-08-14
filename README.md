@@ -2,8 +2,8 @@
 *Using Unity 2017.4.5 LTS.<br/>
 *Used open source assets, see below for info and credits.
 
-VideoURL:<br/>
-https://gfycat.com/ifr/VengefulThirdHound
+Sample video clip:<br/>
+![bossyinnocentfirebelliedtoad](https://user-images.githubusercontent.com/10939602/44078144-6ef835e8-9fc3-11e8-9021-22627f63cac4.gif)
 
 Asset Credits:
 

@@ -7,10 +7,9 @@ using UnityEngine.UI;
 public class JoyInputController : MonoBehaviour, IDragHandler, IPointerDownHandler, IPointerUpHandler
 {
 
-	[SerializeField]
-	Image OJoyImg;
-	[SerializeField]
-	Image IJoyImg;
+	[SerializeField] Image OJoyImg;
+	[SerializeField] Image IJoyImg;
+
 	Vector2 InputDirection;
 	InputController m_input;
 
@@ -21,6 +20,12 @@ public class JoyInputController : MonoBehaviour, IDragHandler, IPointerDownHandl
 	public static bool m_attackSecondary;
 
 	void Awake () {
+		// if (Application.platform != RuntimePlatform.Android ||
+		// 	Application.platform != RuntimePlatform.IPhonePlayer)
+		// {
+		// 	gameObject.SetActive(false);
+		// }
+
 		Input.simulateMouseWithTouches = false;
 		InputDirection = Vector2.zero;
 		m_input = GameObject.FindGameObjectWithTag("Player").GetComponent<InputController> ();
@@ -35,6 +40,11 @@ public class JoyInputController : MonoBehaviour, IDragHandler, IPointerDownHandl
 				eventData.position,
 				eventData.pressEventCamera,
 				out pos)
+			&&
+			RectTransformUtility.RectangleContainsScreenPoint (
+            	OJoyImg.rectTransform.parent.GetComponent<RectTransform> (),
+				eventData.position,
+				eventData.pressEventCamera)
 			) {
 
 			pos.x = ( pos.x / OJoyImg.rectTransform.sizeDelta.x);
@@ -57,7 +67,15 @@ public class JoyInputController : MonoBehaviour, IDragHandler, IPointerDownHandl
     }
 
 	void SetJoyKeyValues () {
-		m_forward = InputDirection.x;
+
+		if (InputDirection.x > 0.05f) {
+			m_forward = 1.0f;
+		} else if (InputDirection.x < -0.05f) {
+			m_forward = -1.0f;
+		} else {
+			m_forward = 0;
+		}
+
 
 		if (InputDirection.y < -0.5) {
 			m_crouch = true;
@@ -89,4 +107,18 @@ public class JoyInputController : MonoBehaviour, IDragHandler, IPointerDownHandl
 		SetJoyKeyValues ();
 		IJoyImg.rectTransform.anchoredPosition = Vector3.zero;
     }
+
+	public void SetAttackPrimary (bool status) {
+		Debug.Log (status);
+		m_attackPrimary = status;
+		//m_attackPrimary = false;
+	}
+
+	public void SetAttackSecondary (bool status) {
+		m_attackSecondary = status;
+		m_attackSecondary = false;
+	}
+
+	public void SetUtility (bool status) {
+	}
 }

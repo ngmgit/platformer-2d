@@ -16,7 +16,6 @@ public class PlayerMovement : MonoBehaviour {
 	private SpriteRenderer m_playerSpriteRenderer;
 	private Animator m_animator;
 	private GameManager gameManagerScript;
-	private bool forceFixFlag;
 
 	private float m_moveX;
 	private Vector2 prevPosition;
@@ -32,7 +31,6 @@ public class PlayerMovement : MonoBehaviour {
 		gameManagerScript = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameManager> ();
 		prevPosition = transform.position;
 		currentHealth = MAX_HEALTH;
-		forceFixFlag = true;
 	}
 
 	void Update () {
@@ -48,10 +46,6 @@ public class PlayerMovement : MonoBehaviour {
 		MovePlayer ();
 		PlayerRaycast ();
 		ModifyGravity();
-
-		if (!m_input.isOnGround) {
-			forceFixFlag = true;
-		}
 	}
 
 	void ModifyGravity () {
@@ -99,8 +93,7 @@ public class PlayerMovement : MonoBehaviour {
 
 	void Jump () {
 		m_input.m_jumpPressed = false;
-		if (m_input.isOnGround && forceFixFlag) {
-			forceFixFlag = false;
+		if (m_input.isOnGround) {
 			m_playerRb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
 		}
 		SetGroundStatus (false);

@@ -75,6 +75,8 @@ public class PlayerAnimation : MonoBehaviour {
 	void SetAttack () {
 		if (m_input.m_attack1) {
 			currentAttackT = currentAttackT == 0? 1: 0;
+			// FIX: VJoy Attack disable to make it tappable attack on touch screen
+			JoyInputController.m_attackPrimary = false;
 		}
 
 		if (m_input.m_attack2) {
