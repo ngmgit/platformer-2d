@@ -23,7 +23,6 @@ GameObject:
   - component: {fileID: 114273742687939664}
   - component: {fileID: 70990481565701556}
   - component: {fileID: 95172787070539720}
-  - component: {fileID: 114508850185041410}
   - component: {fileID: 50770233269636694}
   m_Layer: 0
   m_Name: ZombieNew1
@@ -223,17 +222,6 @@ MonoBehaviour:
   m_damage: 10
   isCollidingWithObstacle: 0
   m_health: 50
---- !u!114 &114508850185041410
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1321407003897354}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 77250af5c35ce34489d231dc3b85d3f7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!212 &212371438153483116
 SpriteRenderer:
   m_ObjectHideFlags: 1

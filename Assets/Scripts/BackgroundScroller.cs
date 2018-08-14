@@ -2,8 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[ExecuteInEditMode]
 public class BackgroundScroller : MonoBehaviour {
 	public float parallaxSpeed = 0.125f;
+	public Sprite bgSprite;
+	public int layerSortIndex;
 
 	private Transform[] bglayers;
 	private int leftIndex;
@@ -16,6 +19,9 @@ public class BackgroundScroller : MonoBehaviour {
 
 		for (int i = 0; i < transform.childCount; i++) {
 			bglayers[i] = transform.GetChild(i);
+			bglayers[i].GetComponent<SpriteRenderer> ().sprite = bgSprite;
+			bglayers[i].GetComponent<SpriteRenderer> ().sortingOrder = layerSortIndex;
+			bglayers[i].GetComponent<SpriteRenderer> ().sortingLayerName = "Parallax Background";
 		}
 
 		positionOffset =  bglayers[0].GetComponent<SpriteRenderer>().bounds.size.x;

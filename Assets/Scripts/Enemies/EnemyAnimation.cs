@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyAnimation : MonoBehaviour {
+public class EnemyAnimation {
 
 	public static class TransitionCoditions {
 		public static string Idle    = "Idle";
