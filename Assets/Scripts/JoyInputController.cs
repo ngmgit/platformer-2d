@@ -18,6 +18,7 @@ public class JoyInputController : MonoBehaviour, IDragHandler, IPointerDownHandl
 	public static bool m_jump;
 	public static bool m_attackPrimary;
 	public static bool m_attackSecondary;
+	public static bool JUMP_FLAG;
 
 	void Awake () {
 		// if (Application.platform != RuntimePlatform.Android ||
@@ -25,10 +26,16 @@ public class JoyInputController : MonoBehaviour, IDragHandler, IPointerDownHandl
 		// {
 		// 	gameObject.SetActive(false);
 		// }
-
+		JUMP_FLAG = true;
 		Input.simulateMouseWithTouches = false;
 		InputDirection = Vector2.zero;
 		m_input = GameObject.FindGameObjectWithTag("Player").GetComponent<InputController> ();
+	}
+
+	void Update () {
+		if (m_input.isInFlight || m_input.isFalling) {
+			JoyInputController.JUMP_FLAG = true;
+		}
 	}
 
     public void OnDrag(PointerEventData eventData)
@@ -89,7 +96,8 @@ public class JoyInputController : MonoBehaviour, IDragHandler, IPointerDownHandl
 		bool rightSideJump = ( InputDirection.x > 0 && InputDirection.x < 0.75f ) &&
 			(InputDirection.y > 0.5f && InputDirection.y < 1.0f);
 
-		if ( (leftSideJump || rightSideJump) && m_input.isOnGround) {
+		if ( (leftSideJump || rightSideJump) && m_input.isOnGround && JUMP_FLAG) {
+			JUMP_FLAG = false;
 			m_jump = true;
 		} else {
 			m_jump = false;
@@ -106,10 +114,10 @@ public class JoyInputController : MonoBehaviour, IDragHandler, IPointerDownHandl
 		InputDirection = Vector3.zero;
 		SetJoyKeyValues ();
 		IJoyImg.rectTransform.anchoredPosition = Vector3.zero;
+		JUMP_FLAG = true;
     }
 
 	public void SetAttackPrimary (bool status) {
-		Debug.Log (status);
 		m_attackPrimary = status;
 		//m_attackPrimary = false;
 	}

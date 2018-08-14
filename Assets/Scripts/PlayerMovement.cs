@@ -93,9 +93,13 @@ public class PlayerMovement : MonoBehaviour {
 
 	void Jump () {
 		m_input.m_jumpPressed = false;
+		JoyInputController.m_jump = false;
+
 		if (m_input.isOnGround) {
+			m_playerRb.velocity = Vector2.zero;
 			m_playerRb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
 		}
+
 		SetGroundStatus (false);
 	}
 
