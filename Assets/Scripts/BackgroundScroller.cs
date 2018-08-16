@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[ExecuteInEditMode]
 public class BackgroundScroller : MonoBehaviour {
 	public float parallaxSpeed = 0.125f;
 	public Sprite bgSprite;

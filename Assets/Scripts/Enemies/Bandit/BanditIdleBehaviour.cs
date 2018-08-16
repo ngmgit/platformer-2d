@@ -9,7 +9,9 @@ public class BanditIdleBehaviour : BanditBaseFSM {
 		base.OnStateEnter (animator, stateInfo, layerIndex);
 		NPCScriptRef.FlipEnemy ();
 		NPCScriptRef.SetIdle ();
-		NPCScriptRef.IdleDelay();
+		if (NPCScriptRef.m_health > 0) {
+			NPCScriptRef.IdleDelay();
+		}
 	}
 
 	// OnStateExit is called when a transition ends and the state machine finishes evaluating this state

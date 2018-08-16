@@ -321,7 +321,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4541494461134486, guid: deb7b9d56b848b14d973bb27634923ef, type: 2}
       propertyPath: m_LocalPosition.y
-      value: 21.9
+      value: 23
       objectReference: {fileID: 0}
     - target: {fileID: 4541494461134486, guid: deb7b9d56b848b14d973bb27634923ef, type: 2}
       propertyPath: m_LocalPosition.z
@@ -446,7 +446,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4541494461134486, guid: deb7b9d56b848b14d973bb27634923ef, type: 2}
       propertyPath: m_LocalPosition.y
-      value: 25.3
+      value: 27.4
       objectReference: {fileID: 0}
     - target: {fileID: 4541494461134486, guid: deb7b9d56b848b14d973bb27634923ef, type: 2}
       propertyPath: m_LocalPosition.z
@@ -704,7 +704,7 @@ GameObject:
   - component: {fileID: 315292582}
   m_Layer: 5
   m_Name: ControlsUI
-  m_TagString: Untagged
+  m_TagString: Touch Controls
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -12236,7 +12236,7 @@ Prefab:
     - target: {fileID: 114194870055277236, guid: deb7b9d56b848b14d973bb27634923ef,
         type: 2}
       propertyPath: parallaxSpeed
-      value: 0.05
+      value: 0.04
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: deb7b9d56b848b14d973bb27634923ef, type: 2}
@@ -13735,7 +13735,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4541494461134486, guid: deb7b9d56b848b14d973bb27634923ef, type: 2}
       propertyPath: m_LocalPosition.y
-      value: 20.6
+      value: 22.1
       objectReference: {fileID: 0}
     - target: {fileID: 4541494461134486, guid: deb7b9d56b848b14d973bb27634923ef, type: 2}
       propertyPath: m_LocalPosition.z
@@ -13860,7 +13860,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4541494461134486, guid: deb7b9d56b848b14d973bb27634923ef, type: 2}
       propertyPath: m_LocalPosition.y
-      value: 21.7
+      value: 23
       objectReference: {fileID: 0}
     - target: {fileID: 4541494461134486, guid: deb7b9d56b848b14d973bb27634923ef, type: 2}
       propertyPath: m_LocalPosition.z
@@ -14050,11 +14050,11 @@ Prefab:
     m_Modifications:
     - target: {fileID: 4244566485115676, guid: c42861ad8be987e4295614062bfa1fe0, type: 2}
       propertyPath: m_LocalPosition.x
-      value: 20.23
+      value: 23.56
       objectReference: {fileID: 0}
     - target: {fileID: 4244566485115676, guid: c42861ad8be987e4295614062bfa1fe0, type: 2}
       propertyPath: m_LocalPosition.y
-      value: 21.47
+      value: 22.47
       objectReference: {fileID: 0}
     - target: {fileID: 4244566485115676, guid: c42861ad8be987e4295614062bfa1fe0, type: 2}
       propertyPath: m_LocalPosition.z
@@ -14079,6 +14079,26 @@ Prefab:
     - target: {fileID: 4244566485115676, guid: c42861ad8be987e4295614062bfa1fe0, type: 2}
       propertyPath: m_RootOrder
       value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 61368089095586748, guid: c42861ad8be987e4295614062bfa1fe0,
+        type: 2}
+      propertyPath: m_Offset.x
+      value: 0.03487909
+      objectReference: {fileID: 0}
+    - target: {fileID: 61368089095586748, guid: c42861ad8be987e4295614062bfa1fe0,
+        type: 2}
+      propertyPath: m_Size.x
+      value: 0.7717159
+      objectReference: {fileID: 0}
+    - target: {fileID: 61368089095586748, guid: c42861ad8be987e4295614062bfa1fe0,
+        type: 2}
+      propertyPath: m_Offset.y
+      value: -0.20874107
+      objectReference: {fileID: 0}
+    - target: {fileID: 61368089095586748, guid: c42861ad8be987e4295614062bfa1fe0,
+        type: 2}
+      propertyPath: m_Size.y
+      value: 1.9101279
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: c42861ad8be987e4295614062bfa1fe0, type: 2}
@@ -14481,7 +14501,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4541494461134486, guid: deb7b9d56b848b14d973bb27634923ef, type: 2}
       propertyPath: m_LocalPosition.y
-      value: 20.6
+      value: 23.1
       objectReference: {fileID: 0}
     - target: {fileID: 4541494461134486, guid: deb7b9d56b848b14d973bb27634923ef, type: 2}
       propertyPath: m_LocalPosition.z
@@ -14810,7 +14830,6 @@ GameObject:
   - component: {fileID: 1616480161}
   - component: {fileID: 1616480160}
   - component: {fileID: 1616480159}
-  - component: {fileID: 1616480162}
   m_Layer: 5
   m_Name: Attack
   m_TagString: Untagged
@@ -14922,36 +14941,6 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1616480157}
---- !u!114 &1616480162
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1616480157}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: -1862395651, guid: f70555f144d8491a825f0804e09c671c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Delegates:
-  - eventID: 2
-    callback:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 315292582}
-          m_MethodName: SetAttackPrimary
-          m_Mode: 6
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
-      m_TypeName: UnityEngine.EventSystems.EventTrigger+TriggerEvent, UnityEngine.UI,
-        Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  delegates: []
 --- !u!1 &1619777925
 GameObject:
   m_ObjectHideFlags: 0
@@ -16421,7 +16410,7 @@ Prefab:
     - target: {fileID: 114194870055277236, guid: deb7b9d56b848b14d973bb27634923ef,
         type: 2}
       propertyPath: parallaxSpeed
-      value: 0.05
+      value: 0.03
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: deb7b9d56b848b14d973bb27634923ef, type: 2}

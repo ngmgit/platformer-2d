@@ -4,23 +4,22 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class PlayerMovement : MonoBehaviour {
-
-	private InputController m_input;
-
 	public int playerSpeed = 10;
 	public int jumpForce = 1250;
 	public float downRaySize = 0.8f;
 	public Transform swordTransform;
 
-	private Rigidbody2D m_playerRb;
-	private SpriteRenderer m_playerSpriteRenderer;
-	private Animator m_animator;
-	private GameManager gameManagerScript;
+	Rigidbody2D m_playerRb;
+	SpriteRenderer m_playerSpriteRenderer;
+	Animator m_animator;
+	GameManager gameManagerScript;
+	InputController m_input;
 
-	private float m_moveX;
-	private Vector2 prevPosition;
-	private int MAX_HEALTH = 100;
-	private float currentHealth;
+	float m_moveX;
+	Vector2 prevPosition;
+	[SerializeField]
+	int MAX_HEALTH = 100;
+	float currentHealth;
 
 	// Use this for initialization
 	void Awake () {

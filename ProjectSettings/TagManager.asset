@@ -9,6 +9,7 @@ TagManager:
   - PlayerSword
   - Enemy
   - EnemyWeaponTrigger
+  - Touch Controls
   layers:
   - Default
   - TransparentFX

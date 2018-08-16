@@ -21,19 +21,21 @@ public class JoyInputController : MonoBehaviour, IDragHandler, IPointerDownHandl
 	public static bool JUMP_FLAG;
 
 	void Awake () {
-		if (Application.platform != RuntimePlatform.Android ||
-			Application.platform != RuntimePlatform.IPhonePlayer)
-		{
-			gameObject.SetActive(false);
-		}
+		// if (Application.platform != RuntimePlatform.Android &&
+		// 	Application.platform != RuntimePlatform.IPhonePlayer)
+		// {
+		// 	gameObject.SetActive (false);
+		// }
+
 		JUMP_FLAG = true;
 		Input.simulateMouseWithTouches = false;
 		InputDirection = Vector2.zero;
 		m_input = GameObject.FindGameObjectWithTag("Player").GetComponent<InputController> ();
+
 	}
 
 	void Update () {
-		if (m_input.isInFlight || m_input.isFalling) {
+		if (!m_input.isOnGround) {
 			JoyInputController.JUMP_FLAG = true;
 		}
 	}
@@ -90,11 +92,14 @@ public class JoyInputController : MonoBehaviour, IDragHandler, IPointerDownHandl
 			m_crouch = false;
 		}
 
+		// Set jump state only when its at the top of the joystick
 		bool leftSideJump = ( InputDirection.x < 0 && InputDirection.x > -0.75f ) &&
 			(InputDirection.y > 0.5f && InputDirection.y < 1.0f);
 
 		bool rightSideJump = ( InputDirection.x > 0 && InputDirection.x < 0.75f ) &&
 			(InputDirection.y > 0.5f && InputDirection.y < 1.0f);
+
+		bool isAttackPlaying = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerAnimation> ().isAttackPrimaryPlaying();
 
 		if ( (leftSideJump || rightSideJump) && m_input.isOnGround && JUMP_FLAG) {
 			JUMP_FLAG = false;

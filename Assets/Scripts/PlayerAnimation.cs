@@ -73,17 +73,37 @@ public class PlayerAnimation : MonoBehaviour {
 	}
 
 	void SetAttack () {
-		if (m_input.m_attack1) {
-			currentAttackT = currentAttackT == 0? 1: 0;
-			// FIX: VJoy Attack disable to make it tappable attack on touch screen
-			JoyInputController.m_attackPrimary = false;
-		}
 
-		if (m_input.m_attack2) {
-			currentAttackT = 2;
-		}
+		bool AtkSec = m_animator.GetCurrentAnimatorStateInfo(0).IsName ("Attack State.Attack3");
 
-		m_animator.SetBool (TransitionCoditions.Attack, m_input.m_attack1 || m_input.m_attack2);
-		m_animator.SetInteger (TransitionCoditions.AttackType, currentAttackT);
+		if (m_input.isOnGround) {
+			if (m_input.m_attack1 && !isAttackPrimaryPlaying()) {
+				currentAttackT = currentAttackT == 0? 1: 0;
+				// FIX: VJoy Attack disable to make it tappable attack on touch screen
+				JoyInputController.m_attackPrimary = false;
+				InitiateAttack (m_input.m_attack1);
+			} else {
+				InitiateAttack (false);
+			}
+
+			if (m_input.m_attack2) {
+				currentAttackT = 2;
+				InitiateAttack (m_input.m_attack2);
+			}
+		}
+	}
+
+	void InitiateAttack (bool isAtk) {
+		m_animator.SetBool (TransitionCoditions.Attack, isAtk);
+		if (isAtk) {
+			m_animator.SetInteger (TransitionCoditions.AttackType, currentAttackT);
+		}
+	}
+
+	public bool isAttackPrimaryPlaying () {
+		bool AtkPrim1 = m_animator.GetCurrentAnimatorStateInfo(0).IsName ("Attack State.Attack1");
+		bool AtkPrim2 = m_animator.GetCurrentAnimatorStateInfo(0).IsName ("Attack State.Attack2");
+
+		return AtkPrim1 || AtkPrim2;
 	}
 }

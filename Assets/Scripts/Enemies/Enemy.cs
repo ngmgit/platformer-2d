@@ -14,11 +14,13 @@ public class Enemy : MonoBehaviour {
     public float m_speed;
     public EnemyType m_type;
     public int m_damage;
+    public int DamageByPlayer;
+    public int MAX_HEALTH;
+
+    [HideInInspector]
     public bool isCollidingWithObstacle;
-
-    [SerializeField]
-    int m_health;
-
+    [HideInInspector]
+    public int m_health;
     float currentSpeed;
     Vector2 m_direction;
     float groundRaySize;
@@ -29,6 +31,7 @@ public class Enemy : MonoBehaviour {
 
     void Start() {
         currentSpeed = m_speed;
+        m_health = MAX_HEALTH;
         m_direction = new Vector2(transform.right.x, transform.right.y);
     }
 
@@ -41,7 +44,9 @@ public class Enemy : MonoBehaviour {
     }
 
     public void Move () {
-        m_enemyRb.velocity = m_direction * currentSpeed;
+        if (m_health > 0) {
+            m_enemyRb.velocity = m_direction * currentSpeed;
+        }
     }
 
     // To turn user scale is changed and making use of scale value to check the direction
@@ -108,14 +113,13 @@ public class Enemy : MonoBehaviour {
 
     // Play hurt animation and decrease health value
     void TakeDamage () {
-        m_health -= 1;
-        if (m_health < 0) {
-            Die ();
-        }
+        m_health -= DamageByPlayer;
+        SetIdle ();
+        m_animator.SetBool (EnemyAnimation.TransitionCoditions.Hurt, true);
     }
 
-    void Die () {
-        SetIdle ();
+    void DisableHurt () {
+         m_animator.SetBool(EnemyAnimation.TransitionCoditions.Hurt, false);
     }
 
     public void SetIdle () {
@@ -131,28 +135,35 @@ public class Enemy : MonoBehaviour {
         m_animator.SetBool (EnemyAnimation.TransitionCoditions.Walk, true);
     }
 
+    void DisableOnDead () {
+        gameObject.SetActive (false);
+    }
+
     void OnTriggerEnter2D (Collider2D other) {
-        // If player is nearby disable attack related coroutine before
-        if (other.gameObject.tag == "Player") {
-            // Trigger Attack Transition
-            StopCoroutine("IdleDelayCR");
-            m_animator.SetBool(EnemyAnimation.TransitionCoditions.AtkIdle, true);
-        }
-
-        // Turn and wait for a few seconds before moving
-        if (other.gameObject.tag == "Ground&Obstacles") {
-            isCollidingWithObstacle = true;
-            m_animator.SetBool (EnemyAnimation.TransitionCoditions.Idle, true);
-        }
-
-        // If player attacks with sword
-        if (other.gameObject.tag == "PlayerSword") {
-            StopCoroutine("IdleDelayCR");
-            if (m_animator.GetCurrentAnimatorStateInfo(0).IsName("Idle")) {
+        if (m_health > 0) {
+            // If player is nearby disable attack related coroutine before
+            if (other.gameObject.tag == "Player") {
+                // Trigger Attack Transition
+                StopCoroutine("IdleDelayCR");
                 m_animator.SetBool(EnemyAnimation.TransitionCoditions.AtkIdle, true);
             }
-            TakeDamage();
+
+            // Turn and wait for a few seconds before moving
+            if (other.gameObject.tag == "Ground&Obstacles") {
+                isCollidingWithObstacle = true;
+                m_animator.SetBool (EnemyAnimation.TransitionCoditions.Idle, true);
+            }
+
+            // If player attacks with sword
+            if (other.gameObject.tag == "PlayerSword") {
+                StopCoroutine("IdleDelayCR");
+                if (m_animator.GetCurrentAnimatorStateInfo(0).IsName("Base Layer.Idle")) {
+                    m_animator.SetBool(EnemyAnimation.TransitionCoditions.AtkIdle, true);
+                }
+                TakeDamage();
+            }
         }
+
     }
 
     void OnTriggerExit2D (Collider2D other) {

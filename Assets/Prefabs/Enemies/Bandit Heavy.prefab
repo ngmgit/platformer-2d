@@ -220,8 +220,9 @@ MonoBehaviour:
   m_speed: 4
   m_type: 2
   m_damage: 20
+  DamageByPlayer: 25
   isCollidingWithObstacle: 0
-  m_health: 100
+  MAX_HEALTH: 100
 --- !u!212 &212676441812197276
 SpriteRenderer:
   m_ObjectHideFlags: 1
