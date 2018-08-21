@@ -42,8 +42,8 @@ public class BackgroundScroller : MonoBehaviour {
 		LastCameraX = Camera.main.transform.position.x;
 
 		if (Camera.main.transform.position.x > bglayers[rightIndex].position.x) {
-			scrollRight ();
-		}
+            ScrollRight();
+        }
 
 		if (Camera.main.transform.position.x < bglayers[leftIndex].position.x) {
 			ScrollLeft ();
@@ -60,7 +60,7 @@ public class BackgroundScroller : MonoBehaviour {
 		}
 	}
 
-	private void scrollRight () {
+	private void ScrollRight () {
 		bglayers[leftIndex].transform.position = new Vector2 (bglayers [rightIndex].position.x + positionOffset, bglayers[rightIndex].position.y);
 		bglayers[leftIndex].localScale = new Vector2 (bglayers[leftIndex].localScale.x * -1, bglayers[leftIndex].localScale.y);
 		rightIndex = leftIndex;

@@ -129,8 +129,8 @@ public class PlayerMovement : MonoBehaviour {
 	}
 
 	void PlayerRaycast() {
-		RaycastHit2D downRayLeft = Physics2D.Raycast (this.transform.position + new Vector3(-0.4f, 0), Vector2.down, downRaySize);
-		RaycastHit2D downRayRight = Physics2D.Raycast (this.transform.position + new Vector3(0.4f, 0), Vector2.down, downRaySize);
+		RaycastHit2D downRayLeft = Physics2D.Raycast (this.transform.position + new Vector3(-0.3f, 0), Vector2.down, downRaySize);
+		RaycastHit2D downRayRight = Physics2D.Raycast (this.transform.position + new Vector3(0.3f, 0), Vector2.down, downRaySize);
 		RaycastHit2D downRay = Physics2D.Raycast (this.transform.position, Vector2.down, downRaySize);
 
 		if (downRayRight.collider != null || downRayLeft.collider != null || downRay.collider != null) {
