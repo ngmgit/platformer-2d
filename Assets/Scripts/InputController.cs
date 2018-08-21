@@ -11,6 +11,7 @@ public class InputController : MonoBehaviour {
 	[HideInInspector] public bool m_slidePressed;
 	[HideInInspector] public bool m_attack1;
 	[HideInInspector] public bool m_attack2;
+    public GameObject gameManager;
 
 	// Status of player
 	[HideInInspector] public bool isOnGround;
@@ -25,9 +26,9 @@ public class InputController : MonoBehaviour {
 		m_attack1 = InputManager.AttackPrimary();
 		m_attack2 = InputManager.AttackSecondary();
 
-		if (Input.GetKey("escape"))
+		if (Input.GetKeyDown(KeyCode.Escape))
         {
-            Application.Quit();
+            gameManager.GetComponent<GameManager>().ToggleOptionsMenu();
         }
 	}
 }

@@ -21,11 +21,11 @@ public class JoyInputController : MonoBehaviour, IDragHandler, IPointerDownHandl
 	public static bool JUMP_FLAG;
 
 	void Awake () {
-		// if (Application.platform != RuntimePlatform.Android &&
-		// 	Application.platform != RuntimePlatform.IPhonePlayer)
-		// {
-		// 	gameObject.SetActive (false);
-		// }
+        if (Application.platform != RuntimePlatform.Android &&
+            Application.platform != RuntimePlatform.IPhonePlayer)
+        {
+            gameObject.SetActive (false);
+        }
 
 		JUMP_FLAG = true;
 		Input.simulateMouseWithTouches = false;

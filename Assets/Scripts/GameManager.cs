@@ -9,6 +9,7 @@ public class GameManager : MonoBehaviour {
 	public Text scoreHolder;
 	public Text HealthCount;
 	public Image HealthUI;
+    public GameObject OptionsMenu;
 
 	private int MAX_HEALTHCOUNT = 3;
 	private int livesRemain;
@@ -48,4 +49,33 @@ public class GameManager : MonoBehaviour {
 	void SetHealthUI () {
 		HealthCount.text = "X " + livesRemain.ToString ();
 	}
+
+    public void ToggleOptionsMenu ()
+    {
+        OptionsMenu.SetActive(!OptionsMenu.activeSelf);
+        if (OptionsMenu.activeSelf)
+        {
+            Time.timeScale = 0;
+        } else
+        {
+            SetTimeScale();
+        }
+    }
+
+    public void Restartlevel ()
+    {
+        SetTimeScale();
+        SceneManager.LoadScene("SampleScene");
+    }
+
+    public void LoadMainMenu ()
+    {
+        SetTimeScale();
+        SceneManager.LoadScene("Menu");
+    }
+
+    void SetTimeScale ()
+    {
+        Time.timeScale = 1;
+    }
 }
