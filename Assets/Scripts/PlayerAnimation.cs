@@ -17,6 +17,7 @@ public class PlayerAnimation : MonoBehaviour {
 		public static string isInFlight  	= "isInFlight";
 		public static string Attack         = "Attack";
 		public static string AttackType     = "AttackType";
+        public static string grabCorner     = "grabCorner";
 	};
 
 	bool prevJumpState;
@@ -35,14 +36,13 @@ public class PlayerAnimation : MonoBehaviour {
 		m_animator.SetBool (TransitionCoditions.isGrounded, m_input.isOnGround);
 
 		SetWalk ();
-
 		SetJump ();
-
 		SetCrouch ();
 		// SetSlide ();
-
 		SetAttack ();
-	}
+        SetGrabCorner();
+        SetClimb();
+    }
 
 
 	void SetWalk () {
@@ -70,7 +70,11 @@ public class PlayerAnimation : MonoBehaviour {
 
 	void SetCrouch () {
 		m_animator.SetBool (TransitionCoditions.isCrouching, m_input.m_crouchPressed);
-	}
+        if (m_input.m_crouchPressed)
+        {
+            m_input.grabCorner = false;
+        }
+    }
 
 	void SetAttack () {
 
@@ -106,4 +110,20 @@ public class PlayerAnimation : MonoBehaviour {
 
 		return AtkPrim1 || AtkPrim2;
 	}
+
+    void SetGrabCorner ()
+    {
+        m_animator.SetBool(TransitionCoditions.grabCorner, m_input.grabCorner);
+    }
+
+    void SetClimb ()
+    {
+        if (m_animator.GetCurrentAnimatorStateInfo(0).IsName("Base Layer.CornerGrab") && m_input.m_jumpPressed)
+        {
+            m_input.grabCorner = false;
+        }
+            
+    }
+
+
 }

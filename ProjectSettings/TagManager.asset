@@ -10,6 +10,8 @@ TagManager:
   - Enemy
   - EnemyWeaponTrigger
   - Touch Controls
+  - FxTemporaire
+  - Ledge Grab
   layers:
   - Default
   - TransparentFX

@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -8,6 +9,7 @@ public class PlayerMovement : MonoBehaviour {
 	public int jumpForce = 1250;
 	public float downRaySize = 0.8f;
 	public Transform swordTransform;
+    public GameObject ledgeTrigger;
 
 	Rigidbody2D m_playerRb;
 	SpriteRenderer m_playerSpriteRenderer;
@@ -40,12 +42,16 @@ public class PlayerMovement : MonoBehaviour {
 		prevPosition = transform.position;
 	}
 
-	// Update is called once per frame
-	void FixedUpdate () {
+    // Update is called once per frame
+    void FixedUpdate () {
 		MovePlayer ();
 		PlayerRaycast ();
-		ModifyGravity();
-	}
+
+        if (!CheckIfGrabCorner())
+        {
+            ModifyGravity();
+        }
+    }
 
 	void ModifyGravity () {
 		if (m_input.isFalling) {
@@ -57,36 +63,46 @@ public class PlayerMovement : MonoBehaviour {
 		}
 	}
 
+    public bool CheckIfGrabCorner()
+    {
+        return m_input.grabCorner ||
+               m_animator.GetCurrentAnimatorStateInfo(0).IsName("CornerGrab");
+    }
+
 	void MovePlayer () {
+        if (!CheckIfGrabCorner())
+        {
+		    if (m_input.m_crouchPressed) {
+			    if (m_input.isOnGround) {
+				    m_playerRb.velocity = Vector2.zero;
+			    }
+		    } else {
+			    if (m_input.m_jumpPressed && m_input.isOnGround) {
+				    Jump();
+			    }
 
-		if (m_input.m_crouchPressed) {
-			if (m_input.isOnGround) {
-				m_playerRb.velocity = Vector2.zero;
-			}
-		} else {
-			if (m_input.m_jumpPressed && m_input.isOnGround) {
-				Jump();
-			}
+			    bool attack1Active = m_animator.GetCurrentAnimatorStateInfo(0).IsName("Attack State.Attack1");
+			    bool attack2Active = m_animator.GetCurrentAnimatorStateInfo(0).IsName("Attack State.Attack2");
 
-			bool attack1Active = m_animator.GetCurrentAnimatorStateInfo(0).IsName("Attack State.Attack1");
-			bool attack2Active = m_animator.GetCurrentAnimatorStateInfo(0).IsName("Attack State.Attack2");
+			    if (!(attack1Active || attack2Active)) {
+				    m_playerRb.velocity = new Vector2(m_moveX * playerSpeed, m_playerRb.velocity.y);
+			    } else {
+				    m_playerRb.velocity = Vector2.zero;
+			    }
 
-			if (!(attack1Active || attack2Active)) {
-				m_playerRb.velocity = new Vector2(m_moveX * playerSpeed, m_playerRb.velocity.y);
-			} else {
-				m_playerRb.velocity = Vector2.zero;
-			}
+		    }
 
-		}
-
-		// flip sprite based on direction facing
-		if (m_moveX < 0.0f) {
-			m_playerSpriteRenderer.flipX = true;
-			swordTransform.localScale = new Vector2 (-1, 1);
-		} else if (m_moveX > 0.0f) {
-			swordTransform.localScale = new Vector2 (1, 1);
-			m_playerSpriteRenderer.flipX = false;
-		}
+		    // flip sprite based on direction facing
+		    if (m_moveX < 0.0f) {
+			    m_playerSpriteRenderer.flipX = true;
+			    swordTransform.localScale = new Vector2 (-1, 1);
+                ledgeTrigger.transform.localScale = new Vector2(-1, 1);
+            } else if (m_moveX > 0.0f) {
+			    swordTransform.localScale = new Vector2 (1, 1);
+                ledgeTrigger.transform.localScale = new Vector2(1, 1);
+                m_playerSpriteRenderer.flipX = false;
+		    }
+        }
 
 	}
 
@@ -162,9 +178,29 @@ public class PlayerMovement : MonoBehaviour {
 		}
 	}
 
-	void OnTriggerEnter2D (Collider2D other) {
+	private void OnTriggerEnter2D (Collider2D other) {
 		if (other.gameObject.tag == "EnemyWeaponTrigger") {
 			DamagePlayer ();
 		}
 	}
+
+    public void SetOnGrabStay ()
+    {
+        if (!m_input.isOnGround && m_input.jumpGrabCornerPressed)
+        {
+            if (!m_animator.GetCurrentAnimatorStateInfo(0).IsName("CornerClimb"))
+            {
+                m_input.grabCorner = true;
+                m_playerRb.gravityScale = 0;
+                m_playerRb.velocity = Vector3.zero;
+            }
+        }
+    }
+
+    // Animation Event: On the first keyframe of CornerClimb
+    public void ClimbWall()
+    {
+        m_playerRb.gravityScale = 4;
+        m_playerRb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
+    }
 }

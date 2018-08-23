@@ -6,11 +6,13 @@ public class InputController : MonoBehaviour {
 
 	// Key Bindings
 	[HideInInspector] public float m_horizontal;
-	[HideInInspector] public bool m_jumpPressed;
+    [HideInInspector] public bool m_jumpPressed;
 	[HideInInspector] public bool m_crouchPressed;
 	[HideInInspector] public bool m_slidePressed;
 	[HideInInspector] public bool m_attack1;
 	[HideInInspector] public bool m_attack2;
+    [HideInInspector] public bool grabCorner;
+    [HideInInspector] public bool jumpGrabCornerPressed;
     public GameObject gameManager;
 
 	// Status of player
@@ -25,6 +27,7 @@ public class InputController : MonoBehaviour {
 		m_crouchPressed  = InputManager.Crouch();
 		m_attack1 = InputManager.AttackPrimary();
 		m_attack2 = InputManager.AttackSecondary();
+        jumpGrabCornerPressed = InputManager.JumpPressForGrab();
 
 		if (Input.GetKeyDown(KeyCode.Escape))
         {

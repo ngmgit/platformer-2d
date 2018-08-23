@@ -43,4 +43,10 @@ public static class InputManager
 		return kb;
 	}
 
+    public static bool JumpPressForGrab ()
+    {
+        bool kb = Input.GetButton("K_Jump") || JoyInputController.m_jump;
+
+        return kb;
+    }
 }
