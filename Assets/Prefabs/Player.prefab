@@ -88,7 +88,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1166448589298104}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.25, y: -0.795, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4244566485115676}
@@ -189,7 +189,7 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.14740825, y: 1.3285408}
+  m_Offset: {x: 0.24246216, y: 0.5254774}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -200,7 +200,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.7084298, y: 0.30670166}
+  m_Size: {x: 0.40434265, y: 0.34788322}
   m_EdgeRadius: 0
 --- !u!95 &95557745059243244
 Animator:
@@ -231,7 +231,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_horizontal: 0
-  m_vertical: 0
   m_jumpPressed: 0
   m_crouchPressed: 0
   m_slidePressed: 0
@@ -243,6 +242,7 @@ MonoBehaviour:
   isOnGround: 0
   isFalling: 0
   isInFlight: 0
+  isHurt: 0
 --- !u!114 &114580221987938970
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -254,7 +254,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 232b59741b0f90440a882ba331929497, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerSpeed: 8
+  playerSpeed: 9
   jumpForce: 16
   downRaySize: 1.5
   swordTransform: {fileID: 4877245274438002}

@@ -19,9 +19,10 @@ public class InputController : MonoBehaviour {
 	[HideInInspector] public bool isOnGround;
 	[HideInInspector] public bool isFalling;
 	[HideInInspector] public bool isInFlight;
+    [HideInInspector] public bool isHurt;
 
-	// Update is called once per frame
-	void Update () {
+    // Update is called once per frame
+    void Update () {
 		m_horizontal = InputManager.Forward();
 		m_jumpPressed = InputManager.Jump();
 		m_crouchPressed  = InputManager.Crouch();

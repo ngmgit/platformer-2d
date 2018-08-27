@@ -18,6 +18,7 @@ public class PlayerAnimation : MonoBehaviour {
 		public static string Attack         = "Attack";
 		public static string AttackType     = "AttackType";
         public static string grabCorner     = "grabCorner";
+        public static string isHurt         = "isHurt";
 	};
 
 	bool prevJumpState;
@@ -42,6 +43,7 @@ public class PlayerAnimation : MonoBehaviour {
 		SetAttack ();
         SetGrabCorner();
         SetClimb();
+        SetHurt();
     }
 
 
@@ -111,12 +113,12 @@ public class PlayerAnimation : MonoBehaviour {
 		return AtkPrim1 || AtkPrim2;
 	}
 
-    void SetGrabCorner ()
+    private void SetGrabCorner ()
     {
         m_animator.SetBool(TransitionCoditions.grabCorner, m_input.grabCorner);
     }
 
-    void SetClimb ()
+    private void SetClimb ()
     {
         if (m_animator.GetCurrentAnimatorStateInfo(0).IsName("Base Layer.CornerGrab") && m_input.m_jumpPressed)
         {
@@ -125,5 +127,9 @@ public class PlayerAnimation : MonoBehaviour {
             
     }
 
-
+    private void SetHurt ()
+    {
+        m_animator.SetBool(TransitionCoditions.isHurt, m_input.isHurt);
+        m_input.isHurt = false;
+    }
 }

@@ -22,6 +22,7 @@ public class PlayerMovement : MonoBehaviour {
 	[SerializeField]
 	int MAX_HEALTH = 100;
 	float currentHealth;
+    BoxCollider2D boxCollider;
 
 	// Use this for initialization
 	void Awake () {
@@ -29,6 +30,7 @@ public class PlayerMovement : MonoBehaviour {
 		m_playerRb = GetComponent <Rigidbody2D> ();
 		m_playerSpriteRenderer = GetComponent <SpriteRenderer> ();
 		m_animator = GetComponent <Animator> ();
+        boxCollider = GetComponent<BoxCollider2D>();
 		gameManagerScript = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameManager> ();
 		prevPosition = transform.position;
 		currentHealth = MAX_HEALTH;
@@ -145,8 +147,8 @@ public class PlayerMovement : MonoBehaviour {
 	}
 
 	void PlayerRaycast() {
-		RaycastHit2D downRayLeft = Physics2D.Raycast (this.transform.position + new Vector3(-0.3f, 0), Vector2.down, downRaySize);
-		RaycastHit2D downRayRight = Physics2D.Raycast (this.transform.position + new Vector3(0.3f, 0), Vector2.down, downRaySize);
+		RaycastHit2D downRayLeft = Physics2D.Raycast (this.transform.position + new Vector3(-0.35f, 0), Vector2.down, downRaySize);
+		RaycastHit2D downRayRight = Physics2D.Raycast (this.transform.position + new Vector3(0.35f, 0), Vector2.down, downRaySize);
 		RaycastHit2D downRay = Physics2D.Raycast (this.transform.position, Vector2.down, downRaySize);
 
 		if (downRayRight.collider != null || downRayLeft.collider != null || downRay.collider != null) {
@@ -170,6 +172,7 @@ public class PlayerMovement : MonoBehaviour {
 	void DamagePlayer () {
 		currentHealth -= 15f;
 		float healthRatio = currentHealth / MAX_HEALTH;
+        m_input.isHurt = true;
 
 		gameManagerScript.SetPlayerHealth(healthRatio);
 
