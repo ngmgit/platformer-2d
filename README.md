@@ -1,9 +1,10 @@
 *Just a personal project to learn 2d game creation in Unity3D.<br/>
 *Using Unity 2017.4.5 LTS.<br/>
 *Used open source assets, see below for info and credits.
+*Video URL: https://gfycat.com/OffbeatGlaringAcornwoodpecker
 
 Sample video clip:<br/>
-![plushweecentipede-size_restricted](https://user-images.githubusercontent.com/10939602/44106047-209d534e-a011-11e8-99cd-8b5b1166061b.gif)
+![OffbeatGlaringAcornwoodpecker-size_restricted](https://thumbs.gfycat.com/OffbeatGlaringAcornwoodpecker-size_restricted.gif)
 
 Asset Credits:
 
