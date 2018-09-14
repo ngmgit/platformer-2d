@@ -12,6 +12,8 @@ TagManager:
   - Touch Controls
   - FxTemporaire
   - Ledge Grab
+  - Moving Platform
+  - Player Main Collider
   layers:
   - Default
   - TransparentFX

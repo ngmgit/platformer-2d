@@ -142,7 +142,7 @@ public class Enemy : MonoBehaviour {
     void OnTriggerEnter2D (Collider2D other) {
         if (m_health > 0) {
             // If player is nearby disable attack related coroutine before
-            if (other.gameObject.tag == "Player") {
+            if (other.gameObject.tag == "Player Main Collider") {
                 // Trigger Attack Transition
                 StopCoroutine("IdleDelayCR");
                 m_animator.SetBool(EnemyAnimation.TransitionCoditions.AtkIdle, true);

@@ -10,6 +10,7 @@ public class PlayerMovement : MonoBehaviour {
 	public float downRaySize = 0.8f;
 	public Transform swordTransform;
     public GameObject ledgeTrigger;
+	public GameObject maincollider;
 
 	Rigidbody2D m_playerRb;
 	SpriteRenderer m_playerSpriteRenderer;
@@ -94,14 +95,19 @@ public class PlayerMovement : MonoBehaviour {
 
 		    }
 
+			Vector2 tempScale;
 		    // flip sprite based on direction facing
 		    if (m_moveX < 0.0f) {
+				tempScale = new Vector2 (-1, 1);
 			    m_playerSpriteRenderer.flipX = true;
-			    swordTransform.localScale = new Vector2 (-1, 1);
-                ledgeTrigger.transform.localScale = new Vector2(-1, 1);
+			    swordTransform.localScale = tempScale;
+                ledgeTrigger.transform.localScale = tempScale;
+				maincollider.transform.localScale = tempScale;
             } else if (m_moveX > 0.0f) {
-			    swordTransform.localScale = new Vector2 (1, 1);
-                ledgeTrigger.transform.localScale = new Vector2(1, 1);
+				tempScale = new Vector2 (1, 1);
+			    swordTransform.localScale = tempScale;
+                ledgeTrigger.transform.localScale = tempScale;
+				maincollider.transform.localScale = tempScale;
                 m_playerSpriteRenderer.flipX = false;
 		    }
         }
@@ -113,6 +119,7 @@ public class PlayerMovement : MonoBehaviour {
 		JoyInputController.m_jump = false;
 
 		if (m_input.isOnGround) {
+			transform.parent = null;
 			m_playerRb.velocity = Vector2.zero;
 			m_playerRb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
 		}

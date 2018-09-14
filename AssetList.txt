@@ -1,0 +1,13 @@
+Characters:
+* Character sprites:
+- https://rvros.itch.io/animated-pixel-hero
+* NPC:
+Bandits : https://stensven.itch.io/light-heavy-bandit
+Zombies : https://craftpix.net/freebies/2d-game-zombie-character-free-sprite-pack-1/
+
+Level Tiles:
+- http://greggman.github.io/hft-tonde-iko/
+
+
+Parallax Background:
+* Forest light: https://raventale.itch.io/parallax-background
